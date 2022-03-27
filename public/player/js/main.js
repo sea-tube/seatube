@@ -9,7 +9,7 @@ const ACTIVE_CONNECTIONS = []
 function main() {
     const video = document.getElementById('myVideo');
 
-    const videoSrc = '/player/output_dir/output.m3u8';
+    const videoSrc = 'https://gateway.pinata.cloud/ipfs/QmU9qwZ9KwMoKHYo9weahG2nXwYJxAUvJHxpXEKrHPH6Vw';
     if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(videoSrc);
