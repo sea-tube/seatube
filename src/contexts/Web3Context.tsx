@@ -5,7 +5,6 @@ import ToastContext from "./ToastContext"
 import Modal from '../components/layout/Modal'
 import { FaTimesCircle } from 'react-icons/fa';
 import AuthContext from "../contexts/AuthContext"
-import { addNetwork, switchNetwork } from '../components/logic/Metamask'
 import OrbitDB from './Orbitdb'
 import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import { ethers } from "ethers";
@@ -188,22 +187,6 @@ export function Web3Provider({ children }: any) {
 		return chainID in networks ? networks[chainID] : 'unknown network'
 	}
 
-	const switchProviderNetwork = () => {
-		switchNetwork(providerInfo.provider, '0x61')
-			.then(() => setInvalidNetwork(false))
-			.catch((err) => {
-
-				//Unrecognized chain ID
-				if (err.code == 4902)
-					addNetwork(providerInfo.provider, networkParams.bsc.testnet)
-						.then(() => setInvalidNetwork(false))
-						.catch((err) => showError(err.message))
-				else
-					showError(err.message)
-
-			})
-	}
-
 	return (
 		<Web3Context.Provider value={{ walletAddress, web3, account }}>
 			{
@@ -214,7 +197,6 @@ export function Web3Provider({ children }: any) {
 						<h3 className='text-xl text-gray-500'>Invalid Network!</h3>
 						<p className='text-base text-gray-600'>Please change your metamask network to continue.</p>
 						<button className="group h-14 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 items-center"
-							onClick={switchProviderNetwork}
 						>
 							<img src="/assets/metamask.svg" className="w-8 mr-4" />
 							<h3 className="text-base text-white">Change Metamask Network</h3>

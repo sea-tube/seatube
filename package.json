@@ -19,7 +19,6 @@
     "metamask-react": "^2.1.2",
     "moralis": "^1.2.3",
     "next": "latest",
-    "nft.storage": "^5.2.2",
     "nookies": "^2.5.2",
     "orbit-db": "^0.28.1",
     "orbit-db-identity-provider": "^0.4.0",

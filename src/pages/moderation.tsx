@@ -16,14 +16,12 @@ const videosData = [
 	{
 		name: "Big Buck Bunny 60fps 4K",
 		poster: "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg",
-		duration: 634.500,
-		explicit: require("../../data/detection/explicit/bbb.json")
+		duration: 634.500
 	},
 	{
 		name: "Adult Content Sample 001 240p",
 		poster: "https://media.threatpost.com/wp-content/uploads/sites/103/2019/07/19153723/Adult.jpg",
-		duration: 1037.8,
-		explicit: require("../../data/detection/explicit/001-240p.json")
+		duration: 1037.8
 	},
 	{
 		name: "Queens of The Stone Age",
@@ -329,16 +327,16 @@ const Moderation = () => {
 												<UserRemoveIcon className="w-4 ml-2" />
 											</button>
 										</div>
-										{
+										{/* {
 											"explicit" in video &&
 											<div className="absolute bottom-0 left-0 w-full h-4 bg-white/10">
 												{
-													video.explicit.annotationResults[0].explicitAnnotation.frames.map((frame, id) =>
+													video.explicit?.annotationResults[0].explicitAnnotation.frames.map((frame, id) =>
 														returnFlag(frame, video.duration)
 													)
 												}
 											</div>
-										}
+										} */}
 									</div>
 
 								)

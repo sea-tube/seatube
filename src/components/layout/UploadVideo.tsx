@@ -1,12 +1,10 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckCircleIcon, CloudUploadIcon } from "@heroicons/react/solid";
-import uploadToIPFS from "../../services/nftStorage";
 import { ExportToIPFS, UploadAsset } from "../../services/livePeer";
 import Link from "next/link";
 
 export default function Modal(props) {
-    //const [open, setOpen] = useState(false);
     const { open, onClose } = props;
     const [loadedProgress, setProgress] = useState(0)
     const [status, setStatus] = useState("")
