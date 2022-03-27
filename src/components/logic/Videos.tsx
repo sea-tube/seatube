@@ -40,7 +40,7 @@ export const videosData = [
 export const getVideo = (id) => {
 	console.log(id)
 	return (
-		<div className="w-64 mx-4 mb-8 hover:text-gray-300 cursor-pointer relative">
+		<div className="w-64 mx-4 mb-8 hover:text-gray-300 cursor-pointer relative" key={id}>
 			<Link href={`/watch/${id}`}>
 				<a>
 					<div className="w-full h-36 bg-black flex justify-center rounded">
@@ -53,8 +53,8 @@ export const getVideo = (id) => {
 							<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
 							<defs>
 								<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-									<stop offset="0%" stop-color="#4ADE80" stop-opacity="1" />
-									<stop offset="50%" stop-color="#22D3EE" stop-opacity="1" />
+									<stop offset="0%" stop-color="#4ADE80" stopOpacity="1" />
+									<stop offset="50%" stop-color="#22D3EE" stopOpacity="1" />
 								</linearGradient>
 							</defs>I
 						</svg>

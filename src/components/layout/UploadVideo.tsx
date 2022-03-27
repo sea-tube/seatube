@@ -131,16 +131,29 @@ export default function Modal(props) {
                                 </div>
                                 {
                                     ipfsCID
-                                        ? <Link href={`/watch/${ipfsCID}`}>
-                                        <a> 
-                                        <div
-                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
-                                        >Open Video</div>
-                                        </a>
-                                        </Link>
+                                        ? <>
+                                            <div className="mx-2">
+                                                <Link href={`/watch/${ipfsCID}`}>
+                                                    <a>
+                                                        <div
+                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                        >Open Video</div>
+                                                    </a>
+                                                </Link>
+                                            </div>
+                                            <div>
+                                                <Link href={`https://livepeer.com/mint-nft?tokenUri=ipfs://${ipfsCID}`}>
+                                                    <a>
+                                                        <div
+                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                        >Mint NFT</div>
+                                                    </a>
+                                                </Link>
+                                            </div>
+                                        </>
                                         : <label htmlFor="video-upload">
                                             <div
-                                                className='relative inline-flex justify-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                className='relative inline-flex justify-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
                                             >
                                                 <div className="bg-special-color absolute top-0 left-0 h-full rounded-md" style={{
                                                     width: `${100 * loadedProgress}%`
