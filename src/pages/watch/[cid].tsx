@@ -19,7 +19,7 @@ export default function Watch() {
     return (
         <>
             <Head>
-                <title>| SeaTube Watch</title>
+                <title>SeaTube Watch</title>
                 <meta name='viewport' content='initial-scale=1.0, width=device-width' />
             </Head>
             <Layout>
