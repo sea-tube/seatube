@@ -1,28 +1,28 @@
-const ipfs_gateways = ["gateway.pinata.cloud", "gatedway.pinata.cloud", "ipfs.nftstorage.link", "siasky.net", "localhost:8000"]
+async function hlsPlay(videoSrc) {
 
-const getHost = (url) => new URL(url).host
+    const ipfs_gateways = ["gateway.pinata.cloud", "ipfs.nftstorage.link"]
 
-startGraph(ipfs_gateways)
+    const getHost = (url) => new URL(url).host
 
-const ACTIVE_CONNECTIONS = []
+    // startGraph(ipfs_gateways)
 
-function main() {
+    const ACTIVE_CONNECTIONS = []
+
     const video = document.getElementById('myVideo');
 
-    const videoSrc = 'https://gateway.pinata.cloud/ipfs/QmU9qwZ9KwMoKHYo9weahG2nXwYJxAUvJHxpXEKrHPH6Vw';
     if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(videoSrc);
         hls.attachMedia(video);
 
-        video.playbackRate = 5.0;
+        video.playbackRate = 1.0;
 
         hls.on(Hls.Events.FRAG_LOADING, function (event, data) {
             console.log(event, data.frag.url);
             const host = getHost(data.frag.url)
             ACTIVE_CONNECTIONS.push(host)
             console.log("connecting to:", host)
-            connect(host)
+            // connect(host)
         });
 
         hls.on(Hls.Events.ERROR, function (event, data) {
@@ -33,7 +33,7 @@ function main() {
             console.log(event, data.frag.url);
             const host = getHost(data.frag.url)
             ACTIVE_CONNECTIONS.splice(ACTIVE_CONNECTIONS.indexOf(host), 1)
-            if (!ACTIVE_CONNECTIONS.includes(host)) disconnect(host)
+            // if (!ACTIVE_CONNECTIONS.includes(host)) disconnect(host)
         });
     }
     // HLS.js is not supported on platforms that do not have Media Source
@@ -54,4 +54,17 @@ function main() {
     }
 }
 
-main()
+// Listen for the event.
+window.addEventListener('loadVideo', function (e) {
+    console.log("video", document.getElementById('myVideo'))
+    console.log("eventLoadVideo", e.detail)
+    if (e.detail.type == "hls") {
+        hlsPlay(e.detail.source)
+    } else {
+        console.log("not hls")
+        const video = document.getElementById('myVideo');
+        video.src = e.detail.source
+    }
+    const event = new CustomEvent('loadingVideo');
+    window.dispatchEvent(event);
+ }, false);

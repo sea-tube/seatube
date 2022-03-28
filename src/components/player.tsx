@@ -1,21 +1,99 @@
-export default function Player() {
-    //     <head>
-    //     {/* <link rel="stylesheet" href="style.css"> */}
+import Script from "next/script"
+import { useEffect, useState } from "react"
 
-    //         {/* <style>
-    //             body {
-    //                 overflow: hidden;
-    //             background-color: transparent;
-    // }
-    //         </style>
-    //         */
-    //     </head> }
+export default function Player({ cid }) {
+
+    const [poster, setPoster] = useState("")
+
+    const loadVideo = (url: string, type: string) => {
+        const event = new CustomEvent('loadVideo', {
+            detail: {
+                source: url,
+                type: type
+            }
+        });
+
+        const interval = setInterval(() => {
+            console.log("dispatching...")
+            window.dispatchEvent(event);
+        }, 1000)
+
+        const listener = function (e) {
+            console.log("cancelling interval")
+            clearInterval(interval)
+            window.removeEventListener('loadingVideo', listener, false)
+        }
+        window.addEventListener('loadingVideo', listener, false)
+    }
+
+    const customManifestSources = async (url) => {
+        const response = await fetch(url)
+        const m3u8 = await response.text()
+        const m3u8Arr = m3u8.split("\n")
+        const m3u8NewArr = []
+        m3u8Arr.forEach((line) => {
+            m3u8NewArr.push(
+                line.replace("output_custom", `https://${cid}.ipfs.dweb.link/output_custom`)
+            )
+        })
+        console.info(m3u8NewArr)
+        const enc = new TextEncoder();
+        return URL.createObjectURL(new Blob([enc.encode(m3u8NewArr.join('\n'))]))
+    }
+
+    const getMetadata = async (cid: string) => {
+        const response = await fetch(`https://ipfs.livepeer.com/ipfs/${cid}`)
+        const metadata = await response.json()
+        return metadata
+    }
+
+    useEffect(() => {
+        if (!cid) return
+        getMetadata(cid)
+            .then((metadata: any) => {
+                console.log(metadata)
+                const videoCID = metadata.properties.video.replace("ipfs://", "")
+                if ("transcodes" in metadata.properties && "hls" in metadata.properties.transcodes) {
+                    const manifestUrl = `https://${videoCID}.ipfs.dweb.link/output_custom.m3u8`
+                    customManifestSources(manifestUrl)
+                        .then((url) => loadVideo(url, "hls"))
+                        .catch(console.error)
+                } else {
+                    const videoUrl = `https://dweb.link/ipfs/${videoCID}`
+                    loadVideo(videoUrl, "mp4")
+                }
+            })
+            .catch(alert)
+    }, [cid])
+
+    const timeFormat = (seconds: number) => {
+        const toInt = (n: number) => n | 0
+        let h = seconds / (60 * 60)
+        let m: any = (h - toInt(h)) * 60
+        let s = ((m - toInt(m)) * 60).toFixed(0)
+        if (m <= 9) m = '0' + toInt(m)
+        if (Number(s) <= 9) s = '0' + s
+        if (toInt(h)) return (toInt(h) + ':' + m + ':' + s)
+        return (toInt(m) + ':' + s)
+    }
+
+    const rangeVideo = (e) => {
+        const val = e.target.value
+        const video = document.querySelector("video")
+        const current = video.duration * (val / 100)
+        console.log(current, video.duration)
+        if (!isNaN(video.duration)) {
+            video.currentTime = current
+            document.querySelector(".video-time-status .current").innerHTML = timeFormat(current)
+            document.getElementById("loadingProgress").style.width = val + '%'
+        }
+    }
 
     return (
         <>
             <div id="seaPlayer" style={{ width: "100%" }}>
                 <div className="player aspect-video relative" style={{ maxWidth: 1024 }}>
-                    <video id="myVideo" className="video" poster="/player/poster.jpg" />
+                    <video id="myVideo" className="video " poster={poster} />
                     <div id="video-gradient" className="gradient"></div>
                     <div id="video-play" className="video-play"></div>
                     <div className="video-loading">
@@ -26,7 +104,7 @@ export default function Player() {
                             <div className="barBackground"></div>
                             <div id="bufferingProgress"></div>
                             <div id="loadingProgress"></div>
-                            <input type="range" min="0" max="100" value="0" id="rangeVideo" className="rangeVideo" />
+                            <input type="range" min="0" max="100" value="0" id="rangeVideo" className="rangeVideo" onChange={rangeVideo} />
                             <div className="thumbnail" id="thumbnail"><span className="time-current">0:00</span></div>
                         </div>
                         <div id="buttons">
@@ -121,7 +199,7 @@ export default function Player() {
                                         </svg>
                                     </button>
                                     <div className="rangeVolume_f">
-                                        <input type="range" min="0" max="100" value="100" className="rangeVolume" />
+                                        <input type="range" min="0" max="100" value="100" className="rangeVolume" onChange={console.log} />
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +260,7 @@ export default function Player() {
                                 </button>
                                 <button className="seek-slides" id="seek-slides">
                                     <svg width="19px" height="19px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129"
-                                        enable-background="new 0 0 129 129">
+                                        enableBackground="new 0 0 129 129">
                                         <g>
                                             <path
                                                 d="m10.5,58.9h44.3c2.3,0 4.1-1.8 4.1-4.1v-44.3c0-2.3-1.8-4.1-4.1-4.1h-44.3c-2.3,0-4.1,1.8-4.1,4.1v44.3c0,2.2 1.9,4.1 4.1,4.1zm4.1-44.3h36.1v36.1h-36.1v-36.1z">
@@ -243,16 +321,11 @@ export default function Player() {
                 </div>
             </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
-            <script src="/player/dist/p2p-graph-bundle.js" type="text/javascript"></script>
-
-            <script src="/player/js/dom.js" type="text/javascript"></script>
-
-            <script src="/player/js/graph.js" type="text/javascript"></script>
-
-            <script src="/player/js/main.js" type="text/javascript"></script>
-
+            <Script src="/player/js/dom.js" />
+            {/* <Script src="/player/dist/p2p-graph-bundle.js" /> */}
+            {/* <Script src="/player/js/graph.js"  /> */}
+            <Script src="https://cdn.jsdelivr.net/npm/hls.js@latest" />
+            <Script src="/player/js/main.js" />
         </>
     )
 }

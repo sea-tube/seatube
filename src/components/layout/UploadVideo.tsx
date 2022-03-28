@@ -132,7 +132,7 @@ export default function Modal(props) {
                                 {
                                     ipfsCID
                                         ? <>
-                                            <div className="mx-2">
+                                            <div className="mx-2" onClick={() => onClose(false)}>
                                                 <Link href={`/watch/${ipfsCID}`}>
                                                     <a>
                                                         <div

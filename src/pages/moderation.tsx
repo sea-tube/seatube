@@ -8,90 +8,7 @@ import { useContext, useState } from "react"
 import WalletContext from "../contexts/WalletContext"
 import { TrendingUpIcon } from "@heroicons/react/outline"
 
-const videosData = [
-	{
-		name: "Sintel | Sample Encoded Video",
-		poster: "https://bafybeieyckjdextaw2yfxo3r2qil37xluwayjz4n7dekuutbzaxxelanw4.ipfs.dweb.link/poster.jpg",
-	},
-	{
-		name: "Big Buck Bunny 60fps 4K",
-		poster: "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg",
-		duration: 634.500
-	},
-	{
-		name: "Adult Content Sample 001 240p",
-		poster: "https://media.threatpost.com/wp-content/uploads/sites/103/2019/07/19153723/Adult.jpg",
-		duration: 1037.8
-	},
-	{
-		name: "Queens of The Stone Age",
-		poster: "https://qotsa.com/wp-content/themes/qotsa/assets/img/img_share-img.jpg",
-	},
-	{
-		name: "Tool",
-		poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7bsWdDEcibT25zEZxp0lfUXCqp9bY_0sUqw&usqp=CAU",
-	},
-	{
-		name: "QOTSA | Infinity",
-		poster: "https://external-preview.redd.it/FTdWnT8epoSl4EtHXM9Z0dy83rgWFTTn9l33uxsDo9Q.jpg?auto=webp&s=98c0d44560441d081fd49f4f2ce89cd72ea8eade",
-	},
-	{
-		name: "Carousel by Mr Bungle",
-		poster: "https://m.media-amazon.com/images/I/91e36dD6knL._AC_SX425_.jpg",
-	},
-	{
-		name: "Immigrant Song - Led Zeppelin",
-		poster: "https://m.media-amazon.com/images/I/81g+SqwTwLL._AC_SL1500_.jpg",
-	},
-	{
-		name: "Dragula | Rob Zombie",
-		poster: "https://m.media-amazon.com/images/I/81bPrUAESnL._AC_SX425_.jpg",
-	},
-	{
-		name: "Rammstein - Zerstören",
-		poster: "https://images.alphacoders.com/693/thumb-1920-693591.jpg",
-	},
-	{
-		name: "DOUBLE KING",
-		poster: "https://i.ytimg.com/vi/w_MSFkZHNi4/maxresdefault.jpg",
-		author: "Felix Colgrave"
-	}
-]
-
-const moderatorsData = {
-	active: [
-		{
-			name: "Anarkrypto",
-			avatar: "https://github.com/anarkrypto.png"
-		},
-		{
-			name: "Akita On Rails",
-			avatar: "https://github.com/akitaonrails.png"
-		}
-	],
-	pending: [
-		{
-			name: "John Smith",
-			avatar: "https://github.com/john.png",
-			votesPercentage: 0
-		},
-		{
-			name: "Mr Bot",
-			avatar: "https://github.com/mrbot.png",
-			votesPercentage: 2
-		},
-		{
-			name: "Linus Torvalds",
-			avatar: "https://github.com/linustorvalds.png",
-			votesPercentage: 6
-		},
-		{
-			name: "Satoshi Nakamoto",
-			avatar: "https://github.com/satoshinakamoto.png",
-			votesPercentage: 11
-		}
-	]
-}
+const data = require("../data/moderation.json")
 
 const showTime = () => {
 	return (
@@ -199,7 +116,7 @@ const Moderation = () => {
 
 							{
 
-								moderatorsData.active.map((moderator, id) =>
+								data.moderators.active.map((moderator, id) =>
 
 									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg'>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">
@@ -237,7 +154,7 @@ const Moderation = () => {
 
 							{
 
-								moderatorsData.pending.map((moderator, id) =>
+								data.moderators.pending.map((moderator, id) =>
 
 									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg'>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">
@@ -285,7 +202,7 @@ const Moderation = () => {
 
 							{
 
-								videosData.map((video, id) =>
+								data.videos.map((video, id) =>
 
 									<div key={id} className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg relative'>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">

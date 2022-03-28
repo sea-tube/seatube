@@ -1,9 +1,7 @@
 import { useState } from "react"
 import Avatar from "./avatar"
-import Burger from "./burger"
 import Logo from "./logo"
 import Menu from "./menu"
-import Wallet_mini from "./wallet_mini"
 import UploadVideo from "./UploadVideo"
 import Link from "next/link"
 
@@ -26,11 +24,10 @@ const navbar = () => {
 
 				<Menu />
 				<div className='flex-grow'></div>
-				<button className="mx-8" onClick={() => setUploadModal(true)}>
+				<button onClick={() => setUploadModal(true)}>
 					<img src="/images/icons/camera.svg" className="w-18" />
 				</button>
-				<div className='w-0.5 h-9 bg-gray-200 hidden md:block'></div>
-				<Wallet_mini />
+				<div className='w-0.5 h-9 bg-gray-600 hidden md:block mx-8'></div>
 				<Avatar avatarUrl="https://github.com/random.png" />
 			</div>
 			<UploadVideo open={uploadModal} onClose={() => setUploadModal(false)} />
