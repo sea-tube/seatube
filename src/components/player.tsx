@@ -5,49 +5,50 @@ export default function Player({ cid }) {
 
     const [poster, setPoster] = useState("")
 
-    const loadVideo = (url: string, type: string) => {
-        const event = new CustomEvent('loadVideo', {
-            detail: {
-                source: url,
-                type: type
-            }
-        });
-
-        const interval = setInterval(() => {
-            console.log("dispatching...")
-            window.dispatchEvent(event);
-        }, 1000)
-
-        const listener = function (e) {
-            console.log("cancelling interval")
-            clearInterval(interval)
-            window.removeEventListener('loadingVideo', listener, false)
-        }
-        window.addEventListener('loadingVideo', listener, false)
-    }
-
-    const customManifestSources = async (url) => {
-        const response = await fetch(url)
-        const m3u8 = await response.text()
-        const m3u8Arr = m3u8.split("\n")
-        const m3u8NewArr = []
-        m3u8Arr.forEach((line) => {
-            m3u8NewArr.push(
-                line.replace("output_custom", `https://${cid}.ipfs.dweb.link/output_custom`)
-            )
-        })
-        console.info(m3u8NewArr)
-        const enc = new TextEncoder();
-        return URL.createObjectURL(new Blob([enc.encode(m3u8NewArr.join('\n'))]))
-    }
-
-    const getMetadata = async (cid: string) => {
-        const response = await fetch(`https://ipfs.livepeer.com/ipfs/${cid}`)
-        const metadata = await response.json()
-        return metadata
-    }
-
     useEffect(() => {
+
+        const loadVideo = (url: string, type: string) => {
+            const event = new CustomEvent('loadVideo', {
+                detail: {
+                    source: url,
+                    type: type
+                }
+            });
+    
+            const interval = setInterval(() => {
+                console.log("dispatching...")
+                window.dispatchEvent(event);
+            }, 1000)
+    
+            const listener = function (e) {
+                console.log("cancelling interval")
+                clearInterval(interval)
+                window.removeEventListener('loadingVideo', listener, false)
+            }
+            window.addEventListener('loadingVideo', listener, false)
+        }
+    
+        const customManifestSources = async (url) => {
+            const response = await fetch(url)
+            const m3u8 = await response.text()
+            const m3u8Arr = m3u8.split("\n")
+            const m3u8NewArr = []
+            m3u8Arr.forEach((line) => {
+                m3u8NewArr.push(
+                    line.replace("output_custom", `https://${cid}.ipfs.dweb.link/output_custom`)
+                )
+            })
+            console.info(m3u8NewArr)
+            const enc = new TextEncoder();
+            return URL.createObjectURL(new Blob([enc.encode(m3u8NewArr.join('\n'))]))
+        }
+    
+        const getMetadata = async (cid: string) => {
+            const response = await fetch(`https://ipfs.livepeer.com/ipfs/${cid}`)
+            const metadata = await response.json()
+            return metadata
+        }
+
         if (!cid) return
         getMetadata(cid)
             .then((metadata: any) => {

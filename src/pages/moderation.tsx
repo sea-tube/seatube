@@ -118,7 +118,7 @@ const Moderation = () => {
 
 								data.moderators.active.map((moderator, id) =>
 
-									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg'>
+									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg' key={id}>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">
 											<div className="w-full h-40 bg-black flex justify-center rounded">
 												<img src={moderator.avatar}
@@ -156,7 +156,7 @@ const Moderation = () => {
 
 								data.moderators.pending.map((moderator, id) =>
 
-									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg'>
+									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg' key={id}>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">
 											<div className="w-full h-40 bg-black flex justify-center rounded">
 												<img src={moderator.avatar}

@@ -5,17 +5,13 @@ import Menu from "./menu"
 import UploadVideo from "./UploadVideo"
 import Link from "next/link"
 
-const navbar = () => {
+const Navbar = () => {
 
 	const [uploadModal, setUploadModal] = useState<boolean>(false)
 
 	return (
 		<nav style={{ height: 56 }}>
-			<div className='flex items-center w-full px-6 pl-20 py-1 bg-secondary-color' style={{
-				// borderBottom: "1px solid",
-				// borderImageSlice: 1,
-				// borderImageSource: "linear-gradient(to left, #4ADE80, #22D3EE)"
-			}}>
+			<div className='flex items-center w-full px-6 pl-20 py-1 bg-secondary-color'>
 				<Link href={"/"}>
 					<a className='md:cursor-default lg:cursor-pointer'>
 						<Logo />
@@ -35,4 +31,4 @@ const navbar = () => {
 	)
 }
 
-export default navbar
+export default Navbar

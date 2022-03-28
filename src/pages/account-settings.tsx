@@ -1,10 +1,10 @@
 import Head from "next/head"
 import Layout from "../components/layout"
 import Page_header from "../components/layout/page_header"
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import AuthContext from "../contexts/AuthContext"
 
-const settings = () => {
+const Settings = () => {
 	const { user } = useContext(AuthContext)
 
 	return (
@@ -19,4 +19,4 @@ const settings = () => {
 	)
 }
 
-export default settings
+export default Settings
