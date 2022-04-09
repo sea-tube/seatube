@@ -1,6 +1,6 @@
 import LivePeerApi, { prodApiEndpoint } from "./api"
 
-const livePeerAPI = new LivePeerApi({ apiKey: "4a54a5ad-0de9-4bd0-9404-8724b7351ee1" }, prodApiEndpoint)
+const livePeerAPI = new LivePeerApi({ apiKey: process.env.NEXT_PUBLIC_LIVEPEER_API_KEY }, prodApiEndpoint)
 
 export const UploadAsset = async (
     file: File, name: string,
