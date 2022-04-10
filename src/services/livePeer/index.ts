@@ -1,6 +1,9 @@
 import LivePeerApi, { prodApiEndpoint } from "./api"
+import LivePeerApi2 from "./api2"
 
 const livePeerAPI = new LivePeerApi({ apiKey: process.env.NEXT_PUBLIC_LIVEPEER_API_KEY }, prodApiEndpoint)
+const livePeerAPI2 = new LivePeerApi2({ apiKey: "" }, prodApiEndpoint)
+
 
 export const UploadAsset = async (
     file: File, name: string,
@@ -13,7 +16,7 @@ export const UploadAsset = async (
     const assetId = data.asset.id
     const putUrl = data.url
 
-    await livePeerAPI.uploadFile(putUrl, file, file.type, (progress: number) => (progressCallback && progressCallback(progress)))
+    await livePeerAPI2.uploadFile(putUrl, file, file.type, (progress: number) => (progressCallback && progressCallback(progress)))
 
     processingCallback && processingCallback()
     const taskInfo = await livePeerAPI.waitTask({ id: taskId }, (progress: number) => (progressCallback && progressCallback(progress)))
