@@ -22,6 +22,7 @@ export default async (req, res) => {
             res.json({ error: "Something went wrong" });
         }
     } catch (error: any) {
+        console.error(error)
         res.statusCode = 500;
         res.json({ error });
     }
