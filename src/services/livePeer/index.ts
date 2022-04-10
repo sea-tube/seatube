@@ -1,7 +1,7 @@
 import LivePeerApi, { prodApiEndpoint } from "./api"
 import LivePeerApi2 from "./api2"
 
-const livePeerAPI = new LivePeerApi({ apiKey: process.env.NEXT_PUBLIC_LIVEPEER_API_KEY }, prodApiEndpoint)
+const livePeerAPI = new LivePeerApi({ apiKey: process.env.NEXT_PUBLIC_LIVEPEER_API_KEY }, "/")
 const livePeerAPI2 = new LivePeerApi2({ apiKey: "" }, prodApiEndpoint)
 
 
