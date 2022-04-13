@@ -1,6 +1,6 @@
 import LivePeerApi, { prodApiEndpoint } from "../../api"
 
-const livePeerAPI = new LivePeerApi({ apiKey: process.env.NEXT_PUBLIC_LIVEPEER_API_KEY }, prodApiEndpoint)
+const livePeerAPI = new LivePeerApi({ apiKey: process.env.LIVEPEER_API_KEY }, prodApiEndpoint)
 
 export default async (req, res) => {
     if (req.method !== 'POST') return res.status(405).send({ message: 'Only POST requests allowed' })
