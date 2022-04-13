@@ -17,6 +17,16 @@ Preview the example live on [mvp.sea.tube](https://mvp.sea.tube)
 ### Running locally
 
 ```bash
+# Create your env:
+cp example.env.local .env.local
+```
+
+Then create an api key at https://livepeer.com/dashboard and edit your .env.local with your **LIVEPEER_API_KEY**
+
+
+Run:
+
+```bash
 # Install dependencies
 yarn 
 # Running in dev mode
