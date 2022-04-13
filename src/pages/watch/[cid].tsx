@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 import { useEffect } from 'react'
 import Layout from '../../components/layout'
 import { getVideo, videosData } from '../../components/logic/Videos'
@@ -9,16 +10,16 @@ export default function Watch() {
 
     const router = useRouter()
 
-    const { id } = router.query
+    const { cid } = router.query
 
     useEffect(() => {
-        if (id) console.log(id)
-    }, [id])
+        if (cid) console.log(cid)
+    }, [cid])
 
     return (
         <>
             <Head>
-                <title>| SeaTube Watch</title>
+                <title>SeaTube Watch</title>
                 <meta name='viewport' content='initial-scale=1.0, width=device-width' />
             </Head>
             <Layout>
@@ -26,7 +27,9 @@ export default function Watch() {
                     <div id="columns" className='w-full flex flex-row mx-auto' style={{ maxWidth: 1280 }}>
                         <div id="primary" className='w-3/4 items-right'>
                             <div className='px-1'>
-                                <Player />
+                                {
+                                    cid && <Player cid={cid} />
+                                }
                             </div>
 
                             <div className='comments w-2/3'>
@@ -40,7 +43,7 @@ export default function Watch() {
                                             <div className="w-full md:w-full flex items-start md:w-full px-3">
                                                 <div className="flex items-start w-1/2 text-gray-700 px-2 mr-auto">
                                                     <svg fill="none" className="w-5 h-5 text-gray-600 mr-1" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
                                                     <p className="text-xs md:text-sm pt-px">Some HTML is okay.</p>
                                                 </div>
@@ -59,7 +62,11 @@ export default function Watch() {
                             {/* Videos */}
                             <div className='px-8 py-2'>
                                 {
-                                    videosData.map((video, id) => getVideo(id))
+                                    videosData.map((video, id) => (
+                                        <div key={id}>
+                                            {getVideo(id)}
+                                        </div>
+                                    ))
                                 }
                             </div>
                         </div>

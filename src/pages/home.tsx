@@ -72,7 +72,11 @@ const Home = () => {
 					{/* Videos */}
 					<div className="w-full flex flex-wrap">
 						{
-							videosData.map((video, id) => getVideo(id))
+							videosData.map((video, id) => (
+								<div key={id}>
+									{getVideo(id)}
+								</div>
+							))
 						}
 					</div>
 

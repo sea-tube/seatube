@@ -9,32 +9,51 @@ export default function Modal(props) {
     const [loadedProgress, setProgress] = useState(0)
     const [status, setStatus] = useState("")
     const [ipfsCID, setIpfsCID] = useState("")
+    const [errorMsg, setErrorMsg] = useState("")
 
     const statusList = ["uploading", "processing", "exporting", "finished"]
 
+    const formatError = (err: any) => {
+        return typeof err == "string"
+            ? err
+            : "message" in err
+                ? err.message
+                : JSON.stringify(err)
+    }
+
+    const setError = (err: any) => setErrorMsg(formatError(err))
+
     const handleFile = (e) => {
         const file = e.target.files[0]
-        if (!file) return alert("invalid file!")
+        if (!file) return setError("invalid file!")
+        setError("")
         console.log(file)
         const fileReader = new FileReader()
         fileReader.onload = async () => {
-            const MB = 1000000;
-            const LIMIT_SIZE = 100 * MB
-            const blob = new Blob([fileReader.result], {
-                // This will set the mimetype of the file
-                type: file.type
-            });
-            const blobName = file.name;
-            if (blob.size > LIMIT_SIZE) return new Error('File size is to big!');
 
-            setStatus("uploading")
-            const asset = await UploadAsset(file, blobName, (progress) => setProgress(progress), () => setStatus("processing"))
-            setStatus("exporting")
-            const ipfs = await ExportToIPFS(asset.id, (progress) => setProgress(progress))
-            console.log(ipfs)
-            setIpfsCID(ipfs.nftMetadataCid)
-            setStatus("finished")
-            setProgress(1)
+            try {
+                const MB = 1000000;
+                const LIMIT_SIZE = 1000 * MB
+                const blob = new Blob([fileReader.result], {
+                    // This will set the mimetype of the file
+                    type: file.type
+                });
+                const blobName = file.name;
+                if (blob.size > LIMIT_SIZE) throw ('File size is to big!');
+
+                setStatus("uploading")
+                const asset = await UploadAsset(file, blobName, (progress) => setProgress(progress), () => setStatus("processing"))
+                setStatus("exporting")
+                const ipfs = await ExportToIPFS(asset.id, (progress) => setProgress(progress))
+                console.log(ipfs)
+                setIpfsCID(ipfs.nftMetadataCid)
+                setStatus("finished")
+                setProgress(1)
+
+            } catch (err) {
+                console.error(err)
+                setError(formatError(err))
+            }
         }
         fileReader.readAsArrayBuffer(file)
     }
@@ -108,6 +127,9 @@ export default function Modal(props) {
                                 </div>
                             </div>
                             <div className='mx-auto flex flex-wrap items-center justify-center mt-6'>
+                                {
+                                    errorMsg && <div className="text-red-300">{errorMsg}</div>
+                                }
                                 <div className="w-full text-center flex flex-wrap py-4">
                                     {
                                         statusList.indexOf(status) > statusList.indexOf("uploading") && <li className="w-full flex justify-center space-x-2"><span>Uploaded</span> <CheckCircleIcon className="w-4" /> </li>
@@ -131,16 +153,29 @@ export default function Modal(props) {
                                 </div>
                                 {
                                     ipfsCID
-                                        ? <Link href={`/watch/${ipfsCID}`}>
-                                        <a> 
-                                        <div
-                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
-                                        >Open Video</div>
-                                        </a>
-                                        </Link>
-                                        : <label htmlFor="video-upload">
+                                        ? <>
+                                            <div className="m-2" onClick={() => onClose(false)}>
+                                                <Link href={`/watch/${ipfsCID}`}>
+                                                    <a>
+                                                        <div
+                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                        >Open Video</div>
+                                                    </a>
+                                                </Link>
+                                            </div>
+                                            <div className="m-2">
+                                                <Link href={`https://livepeer.com/mint-nft?tokenUri=ipfs://${ipfsCID}`}>
+                                                    <a>
+                                                        <div
+                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                        >Mint NFT</div>
+                                                    </a>
+                                                </Link>
+                                            </div>
+                                        </>
+                                        : <label htmlFor={!status ? "video-upload" : ""}>
                                             <div
-                                                className='relative inline-flex justify-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                className={`relative inline-flex justify-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white ${!status && 'hover:bg-special-color'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer`}
                                             >
                                                 <div className="bg-special-color absolute top-0 left-0 h-full rounded-md" style={{
                                                     width: `${100 * loadedProgress}%`

@@ -5,7 +5,6 @@ import ToastContext from "./ToastContext"
 import Modal from '../components/layout/Modal'
 import { FaTimesCircle } from 'react-icons/fa';
 import AuthContext from "../contexts/AuthContext"
-import OrbitDB from './Orbitdb'
 import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import { ethers } from "ethers";
 
@@ -141,8 +140,6 @@ export function Web3Provider({ children }: any) {
 	useEffect(() => {
 
 		if (!web3) return
-
-		OrbitDB(web3.provider)
 
 		alert(chainId)
 

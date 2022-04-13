@@ -1,3 +1,4 @@
+import Script from "next/script"
 import Footer from "./footer"
 import Navbar from "./navbar"
 import Sidebar from "./sidebar"
