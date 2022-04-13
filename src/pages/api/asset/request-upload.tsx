@@ -4,14 +4,11 @@ const livePeerAPI = new LivePeerApi({ apiKey: process.env.NEXT_PUBLIC_LIVEPEER_A
 
 export default async (req, res) => {
 
-    if (req.method !== 'POST') {
-        res.status(405).send({ message: 'Only POST requests allowed' })
-        return
-    }
-    console.log(req.body, typeof(req.body))
-    const body = req.body
-    const assetName = body.name
+    if (req.method !== 'POST') return res.status(405).send({ message: 'Only POST requests allowed' })
+
     try {
+        const body = req.body
+        const assetName = body.name
         const response = await livePeerAPI.requestUploadUrl(assetName)
         if (response) {
             console.log(response)
