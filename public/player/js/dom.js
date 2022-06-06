@@ -1,5 +1,7 @@
 const updateVideoDOM = () => {
 
+   console.log("updating video dom...")
+
    const myVideo = document.getElementById("myVideo");
    let rVideoPressing = false
    let thumbnail = document.getElementById("thumbnail")
@@ -220,7 +222,7 @@ function thumb(time) {
    document.querySelector(".thumbnail").style.backgroundPosition = position
 }
 
-if (document.readyState === 'complete') {
+if (document.readyState !== 'loading') {
    updateVideoDOM()
 } else {
    document.addEventListener("DOMContentLoaded", updateVideoDOM, false);

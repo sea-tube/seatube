@@ -14,12 +14,12 @@ export default function Player({ cid }) {
                     type: type
                 }
             });
-    
+
             const interval = setInterval(() => {
                 console.log("dispatching...")
                 window.dispatchEvent(event);
             }, 1000)
-    
+
             const listener = function (e) {
                 console.log("cancelling interval")
                 clearInterval(interval)
@@ -27,7 +27,7 @@ export default function Player({ cid }) {
             }
             window.addEventListener('loadingVideo', listener, false)
         }
-    
+
         const customManifestSources = async (url) => {
             const response = await fetch(url)
             const m3u8 = await response.text()
@@ -42,7 +42,7 @@ export default function Player({ cid }) {
             const enc = new TextEncoder();
             return URL.createObjectURL(new Blob([enc.encode(m3u8NewArr.join('\n'))]))
         }
-    
+
         const getMetadata = async (cid: string) => {
             const response = await fetch(`https://ipfs.livepeer.com/ipfs/${cid}`)
             const metadata = await response.json()
@@ -60,7 +60,7 @@ export default function Player({ cid }) {
                         .then((url) => loadVideo(url, "hls"))
                         .catch(console.error)
                 } else {
-                    const videoUrl = `https://dweb.link/ipfs/${videoCID}`
+                    const videoUrl = `https://ipfs.livepeer.com/ipfs/${videoCID}`
                     loadVideo(videoUrl, "mp4")
                 }
             })
