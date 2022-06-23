@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckCircleIcon, CloudUploadIcon } from "@heroicons/react/solid";
-import { ExportToIPFS, UploadAsset } from "../../services/livePeer";
+import { ExportToIPFS, UploadAsset } from "services/livePeer";
 import Link from "next/link";
 
 export default function Modal(props) {
