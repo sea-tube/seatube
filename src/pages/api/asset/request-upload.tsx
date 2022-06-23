@@ -1,6 +1,6 @@
-import LivePeerApi, { prodApiEndpoint } from "../api"
+import LivePeerApi from "services/livePeer/api";
 
-const livePeerAPI = new LivePeerApi({ apiKey: process.env.LIVEPEER_API_KEY }, prodApiEndpoint)
+const livePeerAPI = new LivePeerApi({ apiKey: process.env.LIVEPEER_API_KEY }, process.env.NEXT_PUBLIC_LIVEPEER_HOST)
 
 export default async (req, res) => {
 
@@ -10,6 +10,7 @@ export default async (req, res) => {
         const body = req.body
         const assetName = body.name
         const response = await livePeerAPI.requestUploadUrl(assetName)
+        console.log("response:", response)
         if (response) {
             console.log(response)
             res.statusCode = 200;
