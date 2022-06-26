@@ -1,12 +1,12 @@
 import { EyeIcon } from "@heroicons/react/solid"
 import Link from "next/link"
 
-export const videosData = require("../../data/videos.json")
+export const videosData = require("../../data/videos.json");
 
 export const getVideo = (id) => {
 	return (
-		<div className="w-64 mx-4 mb-8 hover:text-gray-300 cursor-pointer relative" key={videosData[id].cid}>
-			<Link href={`/watch/${videosData[id].cid}`}>
+		<div className="w-64 mx-4 mb-8 hover:text-gray-300 cursor-pointer relative" key={videosData[id].nftMetadataCid}>
+			<Link href={`/watch/${videosData[id].nftMetadataCid}`}>
 				<a>
 					<div className="w-full h-36 bg-black flex justify-center rounded">
 						<img src={videosData[id].poster}

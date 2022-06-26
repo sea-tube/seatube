@@ -1,36 +1,23 @@
 [
-	{
-		"name": "Sintel | Sample Encoded Video",
-		"cid": "QmPihzXtXcWRg1sSqrRZKqMGWg53Gmzra2UreK9UkPdiYe",
-		"poster": "https://bafybeieyckjdextaw2yfxo3r2qil37xluwayjz4n7dekuutbzaxxelanw4.ipfs.dweb.link/poster.jpg"
-	},
-	{
-		"name": "Big Buck Bunny 60fps 4K",
-		"poster": "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg"
-	},
-	{
-		"name": "Tool",
-		"poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7bsWdDEcibT25zEZxp0lfUXCqp9bY_0sUqw&usqp=CAU"
-	},
-	{
-		"name": "QOTSA | Infinity",
-		"poster": "https://external-preview.redd.it/FTdWnT8epoSl4EtHXM9Z0dy83rgWFTTn9l33uxsDo9Q.jpg?auto=webp&s=98c0d44560441d081fd49f4f2ce89cd72ea8eade"
-	},
-	{
-		"name": "Carousel by Mr Bungle",
-		"poster": "https://m.media-amazon.com/images/I/91e36dD6knL._AC_SX425_.jpg"
-	},
-	{
-		"name": "Immigrant Song - Led Zeppelin",
-		"poster": "https://m.media-amazon.com/images/I/81g+SqwTwLL._AC_SL1500_.jpg"
-	},
-	{
-		"name": "Rammstein - Zerstören",
-		"poster": "https://images.alphacoders.com/693/thumb-1920-693591.jpg"
-	},
-	{
-		"name": "DOUBLE KING",
-		"poster": "https://i.ytimg.com/vi/w_MSFkZHNi4/maxresdefault.jpg",
-		"author": "Felix Colgrave"
-	}
+    {
+        "name": "Sintel - Open Movie by Blender Foundation",
+        "videoFileCid": "QmcPZGXSyaQSnDVEtJrgtp2EyxhENiBdpGa8pfs5rMBCWr",
+        "nftMetadataCid": "QmPihzXtXcWRg1sSqrRZKqMGWg53Gmzra2UreK9UkPdiYe",
+        "poster": "https://bafybeieyckjdextaw2yfxo3r2qil37xluwayjz4n7dekuutbzaxxelanw4.ipfs.dweb.link/poster.jpg",
+        "duration": 888.064
+    },
+    {
+        "name": "Big Buck Bunny 60fps 4K",
+        "videoFileCid": "bafybeia2oop75dkry65yreyszkob5t35ah5nwc56x7jvcqfba4hpeqhd7m",
+        "nftMetadataCid": "bafkreieqh5o34u3mreoeugwaz3ajlmdw6auznlr5t4a2pwcskz2tghth5u",
+        "poster": "https://bafkreiejqloiivw5tmnqhcdx6ubwji4kdmmujd5g333kiaf3jfwj36qgha.ipfs.nftstorage.link/",
+        "duration": 634.534
+    },
+    {
+        "name": "IPFS the Future of Data Storage",
+        "videoFileCid": "bafybeif7qq3wbdsjz5a36vbt3r4szlak3iazqkyb4pwvar6bv5wrts6no4",
+        "nftMetadataCid": "bafkreihj6lfwbyfwayhyzkiqp6zsybknzwzo46omymupffr5s3263msf6u",
+        "poster": "https://i.ytimg.com/vi/94HH5D23WWI/mqdefault.jpg",
+        "duration": 695.04
+    }
 ]

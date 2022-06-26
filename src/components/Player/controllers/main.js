@@ -8,7 +8,7 @@ async function hlsPlay(videoSrc) {
 
     const ACTIVE_CONNECTIONS = []
 
-    const video = document.getElementById('myVideo');
+    const video = document.getElementById('video');
 
     if (Hls.isSupported()) {
         const hls = new Hls();
@@ -54,17 +54,21 @@ async function hlsPlay(videoSrc) {
     }
 }
 
-// Listen for the event.
-window.addEventListener('loadVideo', function (e) {
-    console.log("video", document.getElementById('myVideo'))
-    console.log("eventLoadVideo", e.detail)
-    if (e.detail.type == "hls") {
-        hlsPlay(e.detail.source)
-    } else {
-        console.log("not hls")
-        const video = document.getElementById('myVideo');
-        video.src = e.detail.source
-    }
-    const event = new CustomEvent('loadingVideo');
-    window.dispatchEvent(event);
- }, false);
+export default function PlayerMain() {
+
+    // Listen for the event.
+    window.addEventListener('loadVideo', function (e) {
+        console.log("video", document.getElementById('video'))
+        console.log("eventLoadVideo", e.detail)
+        if (e.detail.type == "hls") {
+            hlsPlay(e.detail.source)
+        } else {
+            console.log("not hls")
+            const video = document.getElementById('video');
+            video.src = e.detail.source
+        }
+        const event = new CustomEvent('loadingVideo');
+        window.dispatchEvent(event);
+    }, false);
+
+}
