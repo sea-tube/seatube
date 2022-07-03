@@ -12,13 +12,15 @@ export default function Watch() {
 
     const { cid } = router.query;
 
-    const [videoFileCid, setVideoFileCid] = useState<string | null>(null);
     const [videoName, setVideoName] = useState<string | null>(null);
     const [videoPoster, setVideoPoster] = useState<string | null>(null);
+    const [videoUrl, setVideoUrl] = useState<string | null>(null);
+    const [videoType, setVideoType] = useState<string | null>(null);
 
     useEffect(() => {
 
         if (cid) {
+            
 
             if (typeof (cid) !== "string" || !isCid(cid)) {
                 alert("Invalid Video CID!")
@@ -26,25 +28,10 @@ export default function Watch() {
             }
 
             const loadVideo = (url: string, type: string) => {
-                const event = new CustomEvent('loadVideo', {
-                    detail: {
-                        source: url,
-                        type: type
-                    }
-                });
-
-                const interval = setInterval(() => {
-                    console.log("dispatching...")
-                    window.dispatchEvent(event);
-                }, 1000)
-
-                const listener = function (e) {
-                    console.log("cancelling interval")
-                    clearInterval(interval)
-                    window.removeEventListener('loadingVideo', listener, false)
-                }
-                window.addEventListener('loadingVideo', listener, false)
-            }
+                console.log("loading:,", url, type)
+                setVideoUrl(url);
+                setVideoType(type);
+            };
 
             const customManifestSources = async (url) => {
                 const response = await fetch(url)
@@ -71,7 +58,6 @@ export default function Watch() {
             getMetadata(cid)
                 .then((metadata: any) => {
                     console.log(metadata)
-                    setVideoFileCid(cid);
                     setVideoPoster(`https://ipfs.livepeer.com/ipfs/${metadata.image.replace('ipfs://', '')}`);
                     setVideoName(metadata.name)
                     const videoCID = metadata.properties.video.replace("ipfs://", "")
@@ -86,6 +72,7 @@ export default function Watch() {
                     }
                 })
                 .catch(alert)
+
         }
 
     }, [cid])
@@ -103,7 +90,8 @@ export default function Watch() {
                         <div id="primary" className='w-3/4 items-right'>
                             <div className='px-1'>
                                 {
-                                    (videoFileCid && videoPoster) && <Player cid={videoFileCid} poster={videoPoster} />
+                                    (videoPoster && videoType) &&
+                                        <Player source={videoUrl} poster={videoPoster} type={videoType} />
                                 }
                                 <h2 className='text-2xl p-4'>{videoName}</h2>
                             </div>

@@ -15,6 +15,7 @@
     "axios": "^0.24.0",
     "ethers": "^5.5.3",
     "formik": "^2.2.9",
+    "hls.js": "^1.1.5",
     "is-ipfs": "^6.0.2",
     "magic-sdk": "^8.0.1",
     "metamask-react": "^2.1.2",

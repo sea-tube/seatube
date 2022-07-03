@@ -1,4 +1,5 @@
 export interface PlayerProps {
-    cid: string;
+    source: string;
     poster?: string;
+    type?: string;
 }
