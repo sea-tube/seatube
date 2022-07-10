@@ -20,7 +20,7 @@ const Home = () => {
 				<div className='flex flex-col w-full'>
 
 					{/* Categories */}
-					<ul className='flex flex-row flex-wrap pl-0 mb-4 list-none border-b-0 nav nav-tabs md:flex-row'>
+					<ul className='flex pl-0 mx-2 mb-4 list-none border-b-0 lg:justify-start overflow-x-auto overflow-hidden'>
 						<li className='nav-item'>
 							<button
 								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase  hover:bg-secondary-color ${activeTab === "player"
@@ -70,7 +70,7 @@ const Home = () => {
 					</ul>
 
 					{/* Videos */}
-					<div className="w-full flex flex-wrap">
+					<div className="w-full flex flex-wrap justify-center sm:justify-start">
 						{
 							videosData.map((video, id) => (
 								<div key={id}>

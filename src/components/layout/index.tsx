@@ -11,7 +11,7 @@ const Layout = ({ children, containerBg }: any) => {
 				<Navbar />
 				<div className='flex'>
 					<Sidebar />
-					<div className='w-screen sm:pl-24 p-4 containerMinHeight'>
+					<div className='w-screen sm:pl-24 sm:p-4 containerMinHeight'>
 						{children}
 					</div>
 				</div>

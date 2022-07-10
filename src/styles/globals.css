@@ -10,29 +10,6 @@ body.no-scroll {
     font-family: 'DM Sans', sans-serif;
 }
 
-@layer components {
-    .SI_table {
-        border-spacing: theme("spacing.3");
-    }
-}
-
 .containerMinHeight {
     min-height: calc(100vh - 144px);
-}
-
-progress {
-    border-radius: 7px;
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.happyness::-webkit-progress-bar {
-    @apply bg-gray-200 rounded-full;
-}
-
-.happyness::-webkit-progress-value {
-    @apply rounded-full bg-gradient-to-r from-teal-500 to-teal-400;
-}
-
-.happyness::-moz-progress-bar {
-    @apply bg-teal-600 rounded-full;
 }
