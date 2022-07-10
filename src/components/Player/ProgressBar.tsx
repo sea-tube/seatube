@@ -1,19 +1,21 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
-import styles from './Player.module.css'
+import { useEffect, useRef, useState } from 'react';
+import { ProgressBarProps } from './interfaces';
+import styles from './ProgressBar.module.css'
 import { timeFormat } from './utils';
 
-
-interface ProgressBarProps {
-    videoRef: RefObject<HTMLVideoElement>;
-}
-
-export default function ProgressBar({ videoRef }: ProgressBarProps) {
+export default function ProgressBar({ videoRef, onSeekingStart, onSeekingEnd }: ProgressBarProps) {
 
     const thumbnailRef = useRef<HTMLDivElement>();
 
     const [previewTime, setPreviewTime] = useState<string>('0:00');
     const [bufferingProgress, setBufferingProgress] = useState<number>(0);
     const [loadingProgress, setLoadingProgress] = useState<number>(0);
+    const [isSeeking, setIsSeeking] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        if (isSeeking === true) onSeekingStart && onSeekingStart();
+        if (isSeeking === false) onSeekingEnd && onSeekingEnd();
+    }, [isSeeking])
 
 
     useEffect(() => {
@@ -42,23 +44,29 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
     }
 
     /* Thumbnail bar */
-    const mouseMoveHandler = (e) => {
+    const seekBarHandler = (e) => {
 
         // Set positions
         const rangeWidth = e.target.getBoundingClientRect().width;
         const rangeLeft = e.target.getBoundingClientRect().left;
         const thumbWidth = thumbnailRef.current.getBoundingClientRect().width;
-        const thumbLeft = thumbnailRef.current.getBoundingClientRect().left;
+
+        let pointer;
+        if (e.type == "touchmove") {
+            pointer = e.touches[0].pageX;
+        } else if (e.type == "mousemove") {
+            pointer = e.clientX;
+        }
 
         // Set position
-        let positionLeft = e.clientX - rangeLeft - (thumbWidth / 2);
+        let positionLeft = pointer - rangeLeft - (thumbWidth / 2);
         const positionRight = positionLeft + thumbWidth;
         if (positionLeft < 0) positionLeft = 0;
         if (positionRight > rangeWidth) positionLeft = rangeWidth - thumbWidth;
         thumbnailRef.current.style.left = positionLeft + "px";
 
         // Determine time and set thumb
-        const percentage = 100 / (rangeWidth / (e.clientX - rangeLeft));
+        const percentage = 100 / (rangeWidth / (pointer - rangeLeft));
         const videoDuration = videoRef.current.duration;
         const time = Math.round(videoDuration * (percentage / 100))
         setPreviewTime(timeFormat(time));
@@ -66,11 +74,12 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
     }
 
     const seekVideo = (e) => {
+        console.log("hereee")
         const val = e.target.value
-        const video = document.querySelector("video")
-        const current = video.duration * (val / 100)
-        if (!isNaN(video.duration)) {
-            video.currentTime = current
+        const current = videoRef.current.duration * (val / 100)
+        console.log(current)
+        if (!isNaN(videoRef.current.duration)) {
+            videoRef.current.currentTime = current
             document.querySelector(".videoTimeStatus .current").innerHTML = timeFormat(current)
             document.getElementById("loadingProgress").style.width = val + '%'
         }
@@ -90,7 +99,7 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
 
         setLoadingProgress(position);
 
-        //if (rVideoPressing === false) rangeVideo.value = position
+        //if (isSeeking === false) slider.value = position
 
     }
 
@@ -111,9 +120,24 @@ export default function ProgressBar({ videoRef }: ProgressBarProps) {
                 }} />
                 <div id="loadingProgress" className={styles.loadingProgress} style={{
                     width: `${loadingProgress}%`
-                }} />
-                <input type="range" min={0} max={100} value={0} id="range-video"
-                    className={styles.rangeVideo} onChange={seekVideo} onMouseMove={mouseMoveHandler} />
+                }}>
+                    <div className={styles.sliderThumb} />
+                </div>
+                <input
+                    id="range-video"
+                    className={styles.slider}
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={loadingProgress}
+                    onChange={seekVideo}
+                    onMouseMove={seekBarHandler}
+                    onTouchMove={(e) => {
+                        seekBarHandler(e);
+                        setIsSeeking(true);
+                    }}
+                    onTouchEnd={() => setIsSeeking(false)}
+                />
                 <div id="thumbnail" className={styles.thumbnail} ref={thumbnailRef}>
                     <span id="time-current" className={styles.timeCurrent}>{previewTime}</span>
                 </div>

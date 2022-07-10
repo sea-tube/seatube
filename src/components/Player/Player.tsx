@@ -2,46 +2,29 @@ import styles from './Player.module.css'
 import { ensureAnimation, timeFormat } from "./utils";
 
 import PlayIcon from "./assets/icons/play.svg";
-import SoundIcon from "./assets/icons/sound.svg";
-import MuteIcon from "./assets/icons/mute.svg";
 import PauseIcon from "./assets/icons/pause.svg";
-import SettingsIcon from "./assets/icons/settings.svg";
-import SeekIcon from "./assets/icons/seek.svg";
-import ExpandIcon from "./assets/icons/expand.svg";
-import ShrinkIcon from "./assets/icons/shrink.svg";
 import OvalLoading from "./assets/animations/oval.svg";
 
-import { PlayerProps } from "./interface";
+import { PlayerProps } from "./interfaces";
 import { useEffect, useRef, useState } from "react";
 
-import ProgressBar from "./ProgressBar";
 import HlsPlay from './hls';
+import Controls from './Controls';
+import ControlsMobile from './ControlsMobile';
+import GraphConnect from './GraphConnect';
 
 export default function Player({ source, type, poster }: PlayerProps) {
 
-    const [volume, setVolume] = useState<number>(100);
-    const [volPressing, setVolPressing] = useState<boolean>(false);
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
-    const [muted, setMuted] = useState<boolean>(false);
     const [videoPaused, setVideoPaused] = useState<boolean>(false);
-    const [fullScreen, setFullScreen] = useState<boolean>(false);
     const [animating, setAnimating] = useState<boolean>(false);
-    const [timeCurrent, setTimeCurrent] = useState<string>('0:00');
-    const [timeDuration, setTimeDuration] = useState<string>('0:00');
     const [canPlay, setCanPlay] = useState<boolean>(false);
     const [waiting, setWaiting] = useState<boolean>(true);
     const [bufferingProgress, setBufferingProgress] = useState<number>(0);
 
-
     const playerRef = useRef<HTMLDivElement>();
     const videoRef = useRef<HTMLVideoElement>();
     const videoPlayRef = useRef<HTMLDivElement>();
-
-    useEffect(() => {
-        fullScreen
-            ? playerRef.current.classList.add(styles.fullScreen)
-            : playerRef.current.classList.remove(styles.fullScreen)
-    }, [fullScreen])
 
     // Animate Play / Pause
     useEffect(() => {
@@ -77,24 +60,10 @@ export default function Player({ source, type, poster }: PlayerProps) {
         }
     }, [source, type, videoRef])
 
-    useEffect(() => {
-        videoRef.current.volume = volume / 100;
-    }, [volume])
-
-    useEffect(() => {
-        videoRef.current.muted = muted;
-    }, [muted])
-
     const play = () => {
-        setVideoPlay(true);
-        setVideoPaused(false);
-        playerRef.current.classList.remove(styles.paused);
         videoRef.current.play();
     }
     const pause = () => {
-        setVideoPlay(false);
-        setVideoPaused(true);
-        playerRef.current.classList.add(styles.paused);
         videoRef.current.pause();
     }
 
@@ -102,21 +71,19 @@ export default function Player({ source, type, poster }: PlayerProps) {
         videoPlay ? pause() : play();
     }
 
-    const toggleMute = () => setMuted(!muted)
-
-    const rangeVolume = (e) => {
-        const vol = e.target.value;
-        if (volume == vol) return
-        setVolume(vol);
-        vol == 0 ? setMuted(true) : setMuted(false);
-        e.target.style.background = 'linear-gradient(to right, #fff 0%, #fff ' + vol + '%, rgba(255,255,255,.2) ' + vol + '%, rgba(255,255,255,.2) ' + (100 - vol) + '%)'
+    const reportPlay = () => {
+        setVideoPlay(true);
+        setVideoPaused(false);
+        playerRef.current.classList.remove(styles.paused)
+        playerRef.current.classList.add(styles.playing)
     }
 
-    const updateTime = (e) => {
-        setTimeCurrent(timeFormat(e.target.currentTime));
-        setTimeDuration(timeFormat(e.target.duration));
+    const reportPause = () => {
+        setVideoPlay(false);
+        setVideoPaused(true);
+        playerRef.current.classList.remove(styles.playing)
+        playerRef.current.classList.add(styles.paused)
     }
-
 
     const reportWaiting = () => {
         setWaiting(true);
@@ -126,6 +93,14 @@ export default function Player({ source, type, poster }: PlayerProps) {
     const reportCanPlay = () => {
         setWaiting(false);
         setCanPlay(true);
+    }
+
+    const enableFullScreen = () => {
+        playerRef.current.classList.add(styles.fullScreen);
+    }
+
+    const disableFullScreen = () => {
+        playerRef.current.classList.remove(styles.fullScreen);
     }
 
     function reportBuffer(e) {
@@ -145,11 +120,11 @@ export default function Player({ source, type, poster }: PlayerProps) {
                     ref={videoRef}
                     poster={poster}
                     autoPlay={false}
-                    onTimeUpdate={updateTime}
-                    onDurationChange={updateTime}
                     onCanPlay={reportCanPlay}
                     onWaiting={reportWaiting}
                     onProgress={reportBuffer}
+                    onPlay={reportPlay}
+                    onPause={reportPause}
                 />
                 <div id="video-gradient" className={styles.gradient} />
                 <div id="video-play-toggle" className={styles.videoPlayToggle}
@@ -182,83 +157,24 @@ export default function Player({ source, type, poster }: PlayerProps) {
                     <div id="loaded-title" className={styles.loadedTitle}>{bufferingProgress.toFixed(1)}%</div>
                 </div>
 
-                <div id="controls" className={styles.controls}>
-                    <ProgressBar videoRef={videoRef} />
-                    <div id="buttons" className={styles.buttons}>
-                        <div className={styles.buttonsLeft}>
-                            <button id="play-button" className={styles.button} style={{
-                                display: videoPlay ? "none" : "block"
-                            }} onClick={play}>
-                                <PlayIcon className={styles.buttonIcon} />
-                            </button>
-                            <button id="pause-button" className={styles.button} style={{
-                                display: videoPlay ? "block" : "none"
-                            }} onClick={pause}>
-                                <PauseIcon className={styles.buttonIcon} />
-                            </button>
-                            <div id="video-time-status" className="videoTimeStatus">
-                                <span className="current">{timeCurrent}</span>
-                                / <span className="end">{timeDuration}</span>
-                            </div>
-                            <div className={styles.videoVolume}>
-                                <button id="button-sound" className={styles.sound} style={{
-                                    display: muted ? "none" : "block"
-                                }} onClick={toggleMute}>
-                                    <SoundIcon className={styles.buttonIcon} />
-                                </button>
-                                <button id="button-mute" className={styles.mute} onClick={toggleMute} style={{
-                                    display: muted ? "block" : "none"
-                                }}>
-                                    <MuteIcon className={styles.buttonIcon} />
-                                </button>
-                                <div className={styles.rangeVolumeContainer} style={{
-                                }}>
-                                    <input
-                                        type="range"
-                                        min={0}
-                                        step={10}
-                                        max={100}
-                                        value={volume}
-                                        id="range-volume"
-                                        className={styles.rangeVolume}
-                                        onChange={rangeVolume}
-                                        onMouseMove={(e) => volPressing && rangeVolume(e)}
-                                        onMouseDown={() => setVolPressing(true)}
-                                        onMouseUp={() => setVolPressing(false)}
-                                    />
-                                    <div className={styles.rangeVolumeThumb} style={{
-                                        left: `${volume * .8}%`,
-                                    }} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles.buttonsRight}>
-                            <button id="settings">
-                                <div id="resolutions" className={styles.resolutions}>
-                                    <ul></ul>
-                                </div>
-                                <SettingsIcon className={styles.buttonIcon} />
-                            </button>
-                            <button className="seek-slides" id="seek-slides">
-                                <SeekIcon className={styles.buttonIcon} />
-                            </button>
-                            <button id="full-screen" onClick={() => setFullScreen(!fullScreen)}>
-                                {
-                                    fullScreen
-                                        ? <ShrinkIcon className={styles.buttonIcon} />
-                                        : <ExpandIcon className={styles.buttonIcon} />
-                                }
-                            </button>
-                        </div>
-                    </div>
+                <div className={styles.controls}>
+                    <Controls
+                        videoRef={videoRef}
+                        onFullScreen={(status) => status ? enableFullScreen() : disableFullScreen()}
+                    />
                 </div>
-                <div className={styles.graphConnect}>
-                    <div className="root" />
-                </div>
-            </div>
 
-            {/* <Script src="./dist/p2p-graph-bundle.js" /> */}
-            {/* <Script src="./js/graph.js"  /> */}
+                <div className={styles.controlsMobile}>
+                    <ControlsMobile
+                        videoRef={videoRef}
+                        onFullScreen={(status) => status ? enableFullScreen() : disableFullScreen()}
+                    />
+                </div>
+
+
+                <GraphConnect />
+
+            </div>
         </>
     )
 }

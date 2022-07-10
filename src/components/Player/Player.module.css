@@ -1,4 +1,5 @@
 .player {
+    --slider-color: rgb(204, 24, 30);
     position: relative;
     display: flex;
     justify-content: center;
@@ -98,305 +99,29 @@
     opacity: 0;
 }
 
-.controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 55px;
-    color: #eee;
-    background: rgba(0, 0, 0, .18);
-    display: none;
-}
-
-.player:hover .controls,
-.player.paused .controls {
-    display: block;
-}
-
-.buttons {
-    width: 99%;
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 0.5%;
-}
-
-.buttonsLeft,
-.buttonsRight {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 0 1%;
-}
-
-.buttonsRight {
-    gap: 32px;
-}
-
-.videoTimeStatus {
-    margin: 0 10px;
-    line-height: 50px;
-    font-size: 16px;
-}
-
-@media only screen and (max-width: 420px) {
-    .videoTimeStatus {
-        font-size: 12px;
-    }
-}
-
-.button {
-    position: relative;
-    border: 0;
-    cursor: pointer;
-    padding: 2px;
-    min-width: 20px;
-    height: 28px;
-    margin: 0 15px;
-    align-self: center;
-    background-color: transparent;
-}
-
-.buttonIcon {
-    width: 22px;
-    height: 22px;
-    fill: #e6e6e6;
-}
-
-.button:hover .buttonIcon {
-    fill: #fff;
-}
-
-.pause,
-.mute {
-    display: none;
-}
-
-.progressbar {
-    width: 100%;
-    height: 4px;
-    cursor: pointer;
-    position: relative;
-}
-
-.barBackground {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, .2);
-}
-
-.loadingProgress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 4px;
-    background-color: rgb(204, 24, 30);
-}
-
-.bufferingProgress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    height: 4px;
-    width: 0;
-    background-color: rgb(150, 150, 150);
-}
-
-.progressbar:hover .barBackground,
-.progressbar:hover .loadingProgress,
-.progressbar:hover .bufferingProgress,
-.progressbar:hover .rangeVideo {
-    padding-top: 2px;
-    margin-top: -2px;
-}
-
-.rangeVideo {
-    background: transparent;
-    cursor: pointer;
-    height: 5px;
-    margin: 0;
-    transition: 0.1s ease-in;
-    width: 100%;
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-appearance: none;
-}
-
-.thumbnail {
-    display: none;
-    position: absolute;
-    width: 188px;
-    height: 80px;
-    background-image: url(./assets/images/thumbs.png);
-    background-repeat: no-repeat;
-    left: 0px;
-    bottom: 45px;
-    background-position: 0 0;
-    border: 1px solid white;
-    border-radius: 3px;
-}
-
-.timeCurrent {
-    width: 100%;
-    color: white;
-    font-size: 16.5px;
-    text-shadow: 1px 1px 2px black;
-    position: absolute;
-    text-align: center;
-    bottom: -30px;
-}
-
-.progressbar:hover .thumbnail {
-    display: block;
-}
-
-.thumbnail img {
-    width: 100%;
-}
-
-.rangeVideo::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: none;
-    border-radius: 100%;
-    background-color: transparent;
-}
-
-.progressbar:hover .rangeVideo::-webkit-slider-thumb {
-    background-color: rgb(204, 24, 30);
-}
-
-.videoVolume {
-    width: 120px;
-    height: 100%;
-    display: flex;
-}
-
-.rangeVolumeContainer {
-    display: flex;
-    width: 0px;
-    height: 100%;
-    transition: width 0.15s;
-    position: relative;
-    margin-left: 6.5px;
-}
-
-.videoVolume:hover .rangeVolumeContainer {
-    width: 60px;
-}
-
-.rangeVolume {
-    background: linear-gradient(to right, #fff 100%, rgba(255, 255, 255, .2) 0%);
-    cursor: pointer;
-    height: 4px;
-    margin: 0;
-    transition: 0.1s ease-in;
-    width: 100%;
-    border: 0;
-    align-self: center;
-    -webkit-appearance: none;
-}
-
-.rangeVolume:focus {
-    outline: none;
-}
-
-.rangeVolume::-webkit-slider-thumb {
-    background-color: transparent;
-    height: 13px;
-    width: 13px;
-    border: none;
-    border-radius: 100%;
-    -webkit-appearance: none;
-}
-
-.rangeVolumeThumb {
-    background-color: transparent;
-    height: 13px;
-    width: 13px;
-    border: none;
-    border-radius: 100%;
-    position: absolute;
-    top: calc(50% - 5.5px);
-    left: 0;
-    pointer-events: none;
-}
-
-.videoVolume:hover .rangeVolumeThumb {
-    background-color: #fff !important;
-}
-
-.videoVolume:hover .rangeVolume {
-    min-width: 14px;
-}
-
 .playing .gradient,
-.playing .controls {
+.playing .controls,
+.playing .controlsMobile {
     display: none;
 }
 
 .player:hover .gradient,
-.player:hover .controls {
+.player:hover .controls,
+.player:hover .controlsMobile,
+.player.paused .gradient,
+.player.paused .controls,
+.player.paused .controlsMobile {
     display: block;
 }
 
-.resolutions {
-    width: 75px;
-    position: absolute;
-    bottom: calc(100% + 20px);
-    left: -100%;
-    color: white;
-    background-color: #1a1a1a;
-    border-radius: 2px;
-    z-index: 1;
-    opacity: 0;
+@media only screen and (max-width: 639px) {
+    .controls {
+        display: none !important;
+    }
 }
 
-.resolutions.active {
-    opacity: 1;
-}
-
-.resolutions ul {
-    padding: 0;
-    margin: 0;
-}
-
-.resolutions li {
-    list-style: none;
-    text-align: center;
-    padding: 8px 0;
-    margin-bottom: 4px;
-    font-size: 18px;
-    font-weight: 400;
-    font-weight: 300;
-}
-
-.resolutions li:hover {
-    background-color: rgba(0, 0, 0, .4);
-}
-
-.graphConnect {
-    display: none;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 300px;
-    height: 300px;
-    background-color: rgba(0, 0, 0, .7);
-    border-bottom-left-radius: 8px;
-}
-
-@media (max-height: 600px) {
-    .graphConnect {
-        transform: scale(.4);
+@media only screen and (min-width: 640px) {
+    .controlsMobile {
+        display: none !important;
     }
 }

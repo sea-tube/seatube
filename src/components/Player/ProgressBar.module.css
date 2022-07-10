@@ -1,0 +1,126 @@
+.progressbar {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+.barBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, .2);
+}
+
+.loadingProgress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background-color: var(--slider-color);
+}
+
+.bufferingProgress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    height: 4px;
+    width: 0;
+    background-color: rgb(150, 150, 150);
+}
+
+.slider {
+    background: transparent;
+    cursor: pointer;
+    height: 5px;
+    margin: 0;
+    transition: 0.1s ease-in;
+    width: 100%;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-appearance: none;
+    background-color: transparent;
+}
+
+.progressbar:hover .barBackground,
+.progressbar:hover .loadingProgress,
+.progressbar:hover .bufferingProgress,
+.progressbar:hover .slider {
+    height: 6px;
+    top: -1px;
+}
+
+.thumbnail {
+    display: none;
+    position: absolute;
+    width: 188px;
+    height: 80px;
+    background-image: url(./assets/images/thumbs.png);
+    background-repeat: no-repeat;
+    left: 0px;
+    bottom: 45px;
+    background-position: 0 0;
+    border: 1px solid white;
+    border-radius: 3px;
+}
+
+.timeCurrent {
+    width: 100%;
+    color: white;
+    font-size: 16.5px;
+    text-shadow: 1px 1px 2px black;
+    position: absolute;
+    text-align: center;
+    bottom: -30px;
+}
+
+.progressbar:hover .thumbnail {
+    display: block;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+/* ----- Webkit browsers */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background-color: var(--slider-color);
+    overflow: visible;
+    cursor: pointer;
+    opacity: 0;
+}
+
+/* ----- Firefox */
+.slider::-moz-range-thumb {
+    -moz-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background-color: var(--slider-color);
+    overflow: visible;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.progressbar:hover .slider::-webkit-slider-thumb {
+    opacity: 1;
+}
+
+.progressbar:hover .slider::-moz-range-thumb {
+    opacity: 1;
+}
+
+/* Remove dotted outline from range input element focused in Firefox */
+.slider::-moz-focus-outer {
+    border: 0;
+}
