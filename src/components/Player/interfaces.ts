@@ -10,11 +10,13 @@ export interface ControlsProps {
     videoRef: RefObject<HTMLVideoElement>;
     onPlay?: () => void;
     onPause?: () => void;
+    isFullScreen?: boolean;
     onFullScreen?: (status: boolean) => void;
 }
 
 export interface ControlsMobileProps {
     videoRef: RefObject<HTMLVideoElement>;
+    isFullScreen?: boolean;
     onFullScreen?: (status: boolean) => void;
 }
 
@@ -26,4 +28,17 @@ export interface ProgressBarProps {
 
 export interface ControlsProps {
     videoRef: RefObject<HTMLVideoElement>;
+}
+
+type ExitFullscreen = typeof document.exitFullscreen
+type RequestFullscreen = typeof document.documentElement.requestFullscreen;
+type SupportsFullscreen = boolean;
+type DisplayingFullScreen = boolean;
+export interface VideoElement extends HTMLVideoElement {
+    webkitSupportsFullscreen: SupportsFullscreen;
+    webkitDisplayingFullscreen: DisplayingFullScreen;
+    webkitExitFullscreen: ExitFullscreen;
+    webkitEnterFullScreen: RequestFullscreen;
+    mozRequestFullScreen: RequestFullscreen;
+    mozCancelFullScreen: ExitFullscreen;
 }

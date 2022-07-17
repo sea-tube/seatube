@@ -1,0 +1,6 @@
+{
+    "nativeFullScreen": {
+        "desktop": false,
+        "mobile": true
+    }
+}

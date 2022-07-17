@@ -1,30 +1,53 @@
-import styles from './Player.module.css'
-import { ensureAnimation, timeFormat } from "./utils";
-
-import PlayIcon from "./assets/icons/play.svg";
-import PauseIcon from "./assets/icons/pause.svg";
-import OvalLoading from "./assets/animations/oval.svg";
-
-import { PlayerProps } from "./interfaces";
+// External components
 import { useEffect, useRef, useState } from "react";
 
+// Player internal components
+import config from './config.json';
+import styles from './Player.module.css';
+import { ensureAnimation } from "./utils";
+import { PlayerProps, VideoElement } from "./interfaces";
 import HlsPlay from './hls';
 import Controls from './Controls';
 import ControlsMobile from './ControlsMobile';
 import GraphConnect from './GraphConnect';
 
+// Icons
+import PlayIcon from "./assets/icons/play.svg";
+import PauseIcon from "./assets/icons/pause.svg";
+import OvalLoading from "./assets/animations/oval.svg";
+
 export default function Player({ source, type, poster }: PlayerProps) {
 
+    const [isMobile, setIsMobile] = useState<boolean>(false);
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
     const [videoPaused, setVideoPaused] = useState<boolean>(false);
     const [animating, setAnimating] = useState<boolean>(false);
     const [canPlay, setCanPlay] = useState<boolean>(false);
     const [waiting, setWaiting] = useState<boolean>(true);
     const [bufferingProgress, setBufferingProgress] = useState<number>(0);
+    const [fullScreen, setFullScreen] = useState<boolean>(false);
+    const [nativeFulScreen, setNativeFullScreen] = useState<boolean>(false);
 
     const playerRef = useRef<HTMLDivElement>();
-    const videoRef = useRef<HTMLVideoElement>();
+    const videoRef = useRef<VideoElement>();
     const videoPlayRef = useRef<HTMLDivElement>();
+
+    useEffect(() => {
+        const userAgent = navigator.userAgent; // get the user-agent from the headers
+        const isMobileAgent = Boolean(userAgent.match(
+            /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+        ));
+        setIsMobile(isMobileAgent);
+    }, [])
+
+    useEffect(() => {
+        if ((isMobile && config.nativeFullScreen.mobile)
+            || (!isMobile && config.nativeFullScreen.desktop)) {
+            setNativeFullScreen(true);
+        } else {
+            setNativeFullScreen(false);
+        }
+    }, [isMobile])
 
     // Animate Play / Pause
     useEffect(() => {
@@ -39,15 +62,6 @@ export default function Player({ source, type, poster }: PlayerProps) {
     }, [videoPlay])
 
     useEffect(() => {
-        // remove the default buttons
-        videoRef.current.removeAttribute('controls');
-
-        // add paused state
-        playerRef.current.classList.add(styles.paused);
-
-    }, [])
-
-    useEffect(() => {
 
         if (videoRef.current) {
 
@@ -57,6 +71,22 @@ export default function Player({ source, type, poster }: PlayerProps) {
             } else {
                 videoRef.current.src = source;
             }
+
+            // Detect full screen change
+            ['fullscreenchange', 'webkitfullscreenchange'].forEach(
+                (eventType) => videoRef.current.addEventListener(eventType, (() => {
+                    if ((document.fullscreenElement && document.fullscreenElement.id == "video")) {
+                        reportFullScreenOn();
+                    } else {
+                        reportFullScreenOff();
+                    }
+                }), false)
+            );
+
+            // Detect full screen change (iOS)
+            videoRef.current.addEventListener('webkitbeginfullscreen', reportFullScreenOn, false);
+            videoRef.current.addEventListener('webkitendfullscreen', reportFullScreenOff, false);
+
         }
     }, [source, type, videoRef])
 
@@ -95,12 +125,50 @@ export default function Player({ source, type, poster }: PlayerProps) {
         setCanPlay(true);
     }
 
-    const enableFullScreen = () => {
-        playerRef.current.classList.add(styles.fullScreen);
+    const reportFullScreenOn = () => {
+        setFullScreen(true);
+    }
+
+    const reportFullScreenOff = () => {
+        setFullScreen(false);
+    }
+
+    const enableFullScreen = async () => {
+        if (nativeFulScreen) {
+            try {
+                if (videoRef.current.webkitEnterFullScreen) {
+                    await videoRef.current.webkitEnterFullScreen();
+                } else if (videoRef.current.mozRequestFullScreen) {
+                    await videoRef.current.mozRequestFullScreen();
+                } else {
+                    throw ("native full screen unavailable");
+                }
+            } catch (err) {
+                alert(err);
+            }
+        } else {
+            playerRef.current.classList.add(styles.fullScreen);
+            reportFullScreenOn();
+        }
     }
 
     const disableFullScreen = () => {
-        playerRef.current.classList.remove(styles.fullScreen);
+        if (nativeFulScreen) {
+            try {
+                if (videoRef.current.webkitExitFullscreen) {
+                    videoRef.current.webkitExitFullscreen();
+                } else if (videoRef.current.mozCancelFullScreen) {
+                    videoRef.current.mozCancelFullScreen();
+                } else {
+                    throw ("native full screen unavailable");
+                }
+            } catch (err) {
+                alert(err);
+            }
+        } else {
+            playerRef.current.classList.remove(styles.fullScreen);
+            reportFullScreenOff();
+        }
     }
 
     function reportBuffer(e) {
@@ -119,12 +187,14 @@ export default function Player({ source, type, poster }: PlayerProps) {
                     className={styles.video}
                     ref={videoRef}
                     poster={poster}
-                    autoPlay={false}
+                    autoPlay={true}
                     onCanPlay={reportCanPlay}
                     onWaiting={reportWaiting}
                     onProgress={reportBuffer}
                     onPlay={reportPlay}
                     onPause={reportPause}
+                    controls={(fullScreen && nativeFulScreen) ? true : false}
+                    playsInline={true}
                 />
                 <div id="video-gradient" className={styles.gradient} />
                 <div id="video-play-toggle" className={styles.videoPlayToggle}
@@ -159,6 +229,7 @@ export default function Player({ source, type, poster }: PlayerProps) {
 
                 <div className={styles.controls}>
                     <Controls
+                        isFullScreen={fullScreen}
                         videoRef={videoRef}
                         onFullScreen={(status) => status ? enableFullScreen() : disableFullScreen()}
                     />
@@ -166,11 +237,11 @@ export default function Player({ source, type, poster }: PlayerProps) {
 
                 <div className={styles.controlsMobile}>
                     <ControlsMobile
+                        isFullScreen={fullScreen}
                         videoRef={videoRef}
                         onFullScreen={(status) => status ? enableFullScreen() : disableFullScreen()}
                     />
                 </div>
-
 
                 <GraphConnect />
 

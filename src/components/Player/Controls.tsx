@@ -13,12 +13,11 @@ import Volume from './Volume';
 import { timeFormat } from './utils';
 import { ControlsProps } from './interfaces';
 
-export default function Controls({ videoRef, onPlay, onPause, onFullScreen }: ControlsProps) {
+export default function Controls({ videoRef, onPlay, onPause, isFullScreen = true, onFullScreen }: ControlsProps) {
 
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
     const [timeCurrent, setTimeCurrent] = useState<string>('0:00');
     const [timeDuration, setTimeDuration] = useState<string>('0:00');
-    const [fullScreen, setFullScreen] = useState<boolean>(false);
 
     useEffect(() => {
         if (videoRef.current.canPlayType) {
@@ -45,8 +44,7 @@ export default function Controls({ videoRef, onPlay, onPause, onFullScreen }: Co
     }
 
     const toggleFullScreenMode = () => {
-        onFullScreen && onFullScreen(!fullScreen);
-        setFullScreen(!fullScreen);
+        onFullScreen && onFullScreen(!isFullScreen);
     }
 
     return (
@@ -92,7 +90,7 @@ export default function Controls({ videoRef, onPlay, onPause, onFullScreen }: Co
                     </button>
                     <button id="full-screen" onClick={() => toggleFullScreenMode()}>
                         {
-                            fullScreen
+                            isFullScreen
                                 ? <ShrinkIcon className={styles.buttonIcon} />
                                 : <ExpandIcon className={styles.buttonIcon} />
                         }
