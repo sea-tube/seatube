@@ -1,0 +1,155 @@
+.player {
+    --slider-color: rgb(204, 24, 30);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    color: #eee;
+    text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+    border-radius: 4px;
+    background: #000;
+    width: 100%;
+    max-width: 1024;
+    min-height: 320px;
+    max-height: 580px;
+}
+
+@media only screen and (max-height: 639px) {
+    .player {
+        max-height: 420px;
+    }
+}
+
+@media only screen and (max-height: 420px) {
+    .player {
+        max-height: 84vh;
+    }
+}
+
+.video {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+    border-radius: 4px;
+    transition: all 1s ease-in-out;
+}
+
+/* @media (min-aspect-ratio: 16/9) {
+    .video {
+        width:100%;
+        height: auto;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    .video { 
+        width:auto;
+        height: 100%;
+    }
+} */
+
+.fullScreen {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    margin: 0;
+    z-index: 100;
+}
+
+.fullScreen .video {
+    position: absolute;
+}
+
+.gradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.5));
+}
+
+.videoLoading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loadedTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -15px 0 0 -30px;
+    width: 60px;
+    line-height: 30px;
+    text-align: center;
+    color: #eee;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.videoPlayToggle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.videoPlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90px;
+    height: 90px;
+    margin: -45px 0 0 -45px;
+    background: rgba(0, 0, 0, .66);
+    border-radius: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+.videoPlay.animate {
+    width: 180px;
+    height: 180px;
+    margin: -90px 0 0 -90px;
+    transition: all .7s;
+    opacity: 0;
+}
+
+.playing .gradient,
+.playing .controls,
+.playing .controlsMobile {
+    display: none;
+}
+
+.player:hover .gradient,
+.player:hover .controls,
+.player:hover .controlsMobile,
+.player.paused .gradient,
+.player.paused .controls,
+.player.paused .controlsMobile {
+    display: block;
+}
+
+@media only screen and (max-width: 639px) {
+    .controls {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 640px) {
+    .controlsMobile {
+        display: none !important;
+    }
+}

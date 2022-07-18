@@ -39,7 +39,7 @@ export default function Modal(props) {
                     type: file.type
                 });
                 const blobName = file.name;
-                if (blob.size > LIMIT_SIZE) throw ('File size is to big!');
+                if (blob.size > LIMIT_SIZE) throw ('File size is too big!');
 
                 setStatus("uploading")
                 const asset = await UploadAsset(file, blobName, (progress) => setProgress(progress), () => setStatus("processing"))

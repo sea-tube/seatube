@@ -8,7 +8,7 @@ import AuthContext from "../contexts/AuthContext"
 import Router from "next/router"
 import Footer from "../components/layout/footer"
 import Link from "next/link"
-import Player from "../components/player"
+import Player from "../components/Player"
 
 const Index = () => {
 

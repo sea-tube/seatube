@@ -1,18 +1,26 @@
-async function hlsPlay(videoSrc) {
+import { RefObject } from "react";
+import Hls from 'hls.js';
 
-    const ipfs_gateways = ["gateway.pinata.cloud", "ipfs.nftstorage.link"]
+interface HlsPlayProps {
+    source: string;
+    videoRef: RefObject<HTMLVideoElement>;
+}
 
-    const getHost = (url) => new URL(url).host
+export default async function HlsPlay({ source, videoRef }: HlsPlayProps) {
+
+    const ipfs_gateways = ["gateway.pinata.cloud", "ipfs.nftstorage.link"];
+
+    const getHost = (url) => new URL(url).host;
 
     // startGraph(ipfs_gateways)
 
     const ACTIVE_CONNECTIONS = []
 
-    const video = document.getElementById('myVideo');
+    const video = videoRef.current;
 
     if (Hls.isSupported()) {
         const hls = new Hls();
-        hls.loadSource(videoSrc);
+        hls.loadSource(source);
         hls.attachMedia(video);
 
         video.playbackRate = 1.0;
@@ -50,21 +58,6 @@ async function hlsPlay(videoSrc) {
     // event will be emitted; the last video event that can be reliably
     // listened-for when the URL is not on the white-list is 'loadedmetadata'.
     else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = videoSrc;
+        video.src = source;
     }
 }
-
-// Listen for the event.
-window.addEventListener('loadVideo', function (e) {
-    console.log("video", document.getElementById('myVideo'))
-    console.log("eventLoadVideo", e.detail)
-    if (e.detail.type == "hls") {
-        hlsPlay(e.detail.source)
-    } else {
-        console.log("not hls")
-        const video = document.getElementById('myVideo');
-        video.src = e.detail.source
-    }
-    const event = new CustomEvent('loadingVideo');
-    window.dispatchEvent(event);
- }, false);
