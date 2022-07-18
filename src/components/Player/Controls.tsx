@@ -24,18 +24,26 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
             // add event-handlers to listen video status
             videoRef.current.addEventListener("updateTime", updateTime, false);
             videoRef.current.addEventListener("durationchange", updateTime, false);
+            videoRef.current.addEventListener("play", reportPlay, false);
+            videoRef.current.addEventListener("pause", reportPause, false);
         }
     }, [videoRef])
 
-    const play = () => {
+    const reportPlay = () => {
         setVideoPlay(true);
-        videoRef.current.play();
         onPlay && onPlay();
     }
-    const pause = () => {
+
+    const reportPause = () => {
         setVideoPlay(false);
-        videoRef.current.pause();
         onPause && onPause();
+    }
+
+    const play = () => {
+        videoRef.current.play();
+    }
+    const pause = () => {
+        videoRef.current.pause();
     }
 
     const updateTime = (e) => {
