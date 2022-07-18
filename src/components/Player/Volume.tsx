@@ -12,7 +12,7 @@ export default function Volume({ videoRef }: ControlsProps) {
 
     const toggleMute = () => setMuted(!muted)
 
-    const rangeVolume = (e) => {
+    const volumeHandler = (e) => {
         const vol = e.target.value;
         if (volume == vol) return
         setVolume(vol);
@@ -44,7 +44,7 @@ export default function Volume({ videoRef }: ControlsProps) {
                 <MuteIcon className={styles.icon} />
             </button>
 
-            <div className={styles.rangeVolumeContainer}>
+            <div className={styles.volumeSliderContainer}>
 
                 <input
                     type="range"
@@ -53,16 +53,12 @@ export default function Volume({ videoRef }: ControlsProps) {
                     max={100}
                     value={volume}
                     id="range-volume"
-                    className={styles.rangeVolume}
-                    onChange={rangeVolume}
-                    onMouseMove={(e) => volPressing && rangeVolume(e)}
+                    className={styles.volumeSlider}
+                    onChange={volumeHandler}
+                    onMouseMove={(e) => volPressing && volumeHandler(e)}
                     onMouseDown={() => setVolPressing(true)}
                     onMouseUp={() => setVolPressing(false)}
                 />
-
-                <div className={styles.rangeVolumeThumb} style={{
-                    left: `${volume * .8}%`,
-                }} />
 
             </div>
         </div>
