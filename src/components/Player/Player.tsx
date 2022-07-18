@@ -222,7 +222,7 @@ export default function Player({ source, type, poster }: PlayerProps) {
                         }
                         {
 
-                            ((!videoPlay && animating != "pausing") || animating == "playing") &&
+                            ((!videoPlay && canPlay && animating != "pausing") || animating == "playing") &&
                             <PlayIcon style={{
                                 width: "50%",
                                 marginLeft: "10%"

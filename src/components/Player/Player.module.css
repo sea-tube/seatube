@@ -7,18 +7,46 @@
     text-shadow: 0 0 2px rgba(0, 0, 0, .5);
     border-radius: 4px;
     background: #000;
+    width: 100%;
     max-width: 1024;
-    min-height: 340px;
+    min-height: 320px;
     max-height: 580px;
+}
+
+@media only screen and (max-height: 639px) {
+    .player {
+        max-height: 420px;
+    }
+}
+
+@media only screen and (max-height: 420px) {
+    .player {
+        max-height: 84vh;
+    }
 }
 
 .video {
     width: auto;
     max-width: 100%;
-    min-height: 340px;
+    height: auto;
+    max-height: 100%;
     border-radius: 4px;
     transition: all 1s ease-in-out;
 }
+
+/* @media (min-aspect-ratio: 16/9) {
+    .video {
+        width:100%;
+        height: auto;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    .video { 
+        width:auto;
+        height: 100%;
+    }
+} */
 
 .fullScreen {
     position: fixed;
@@ -26,6 +54,7 @@
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
+    margin: 0;
     z-index: 100;
 }
 
