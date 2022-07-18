@@ -12,22 +12,22 @@ export interface ControlsProps {
     onPause?: () => void;
     isFullScreen?: boolean;
     onFullScreen?: (status: boolean) => void;
+    onSeekingStart?: () => void;
+    onSeekingEnd?: () => void;
 }
 
 export interface ControlsMobileProps {
     videoRef: RefObject<HTMLVideoElement>;
     isFullScreen?: boolean;
     onFullScreen?: (status: boolean) => void;
+    onSeekingStart?: () => void;
+    onSeekingEnd?: () => void;
 }
 
 export interface ProgressBarProps {
     videoRef: RefObject<HTMLVideoElement>;
     onSeekingStart?: () => void;
     onSeekingEnd?: () => void;
-}
-
-export interface ControlsProps {
-    videoRef: RefObject<HTMLVideoElement>;
 }
 
 type ExitFullscreen = typeof document.exitFullscreen

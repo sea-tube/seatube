@@ -21,12 +21,13 @@ export default function Player({ source, type, poster }: PlayerProps) {
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
     const [videoPaused, setVideoPaused] = useState<boolean>(false);
-    const [animating, setAnimating] = useState<boolean>(false);
+    const [animating, setAnimating] = useState<null | 'playing' | 'pausing'>(null);
     const [canPlay, setCanPlay] = useState<boolean>(false);
     const [waiting, setWaiting] = useState<boolean>(true);
     const [bufferingProgress, setBufferingProgress] = useState<number>(0);
     const [fullScreen, setFullScreen] = useState<boolean>(false);
     const [nativeFulScreen, setNativeFullScreen] = useState<boolean>(false);
+    const [isSeeking, setIsSeeking] = useState<boolean>(false);
 
     const playerRef = useRef<HTMLDivElement>();
     const videoRef = useRef<VideoElement>();
@@ -51,14 +52,19 @@ export default function Player({ source, type, poster }: PlayerProps) {
 
     // Animate Play / Pause
     useEffect(() => {
-        ensureAnimation(async () => {
-            setAnimating(true);
-            videoPlayRef.current.classList.add(styles.animate);
-        }, 1000)
-            .then(() => {
-                videoPlayRef.current.classList.remove(styles.animate);
-                setAnimating(false);
-            })
+        if (isSeeking) console.log("is seeking")
+        if (!isSeeking && canPlay && !animating) {
+            const animation = videoPlay ? "playing" : "pausing";
+            ensureAnimation(async () => {
+                setAnimating(animation);
+                // alert("here")
+                videoPlayRef.current.classList.add(styles.animate);
+            }, 700)
+                .then(() => {
+                    videoPlayRef.current.classList.remove(styles.animate);
+                    setAnimating(null);
+                })
+        }
     }, [videoPlay])
 
     useEffect(() => {
@@ -198,24 +204,29 @@ export default function Player({ source, type, poster }: PlayerProps) {
                 />
                 <div id="video-gradient" className={styles.gradient} />
                 <div id="video-play-toggle" className={styles.videoPlayToggle}
-                    onClick={togglePlay} style={{
-                        opacity: (canPlay && (!videoPlay || animating)) ? 1 : 0
-                    }}>
+                    onClick={togglePlay}
+                    style={{
+                        opacity: (videoPlay && !animating) || isSeeking ? 0 : 1
+                    }}
+                >
                     <div id="video-play"
                         className={styles.videoPlay}
                         ref={videoPlayRef}
                         onClick={togglePlay}
-
                     >
                         {
-                            (videoPaused && animating)
-                                ? <PauseIcon style={{
-                                    width: "50%"
-                                }} fill="#e6e6e6" />
-                                : <PlayIcon style={{
-                                    width: "50%",
-                                    marginLeft: "10%"
-                                }} fill="#e6e6e6" />
+                            (animating == "pausing") &&
+                            <PauseIcon style={{
+                                width: "50%"
+                            }} fill="#e6e6e6" />
+                        }
+                        {
+
+                            ((!videoPlay && animating != "pausing") || animating == "playing") &&
+                            <PlayIcon style={{
+                                width: "50%",
+                                marginLeft: "10%"
+                            }} fill="#e6e6e6" />
                         }
                     </div>
                 </div>
@@ -232,6 +243,8 @@ export default function Player({ source, type, poster }: PlayerProps) {
                         isFullScreen={fullScreen}
                         videoRef={videoRef}
                         onFullScreen={(status) => status ? enableFullScreen() : disableFullScreen()}
+                        onSeekingStart={() => setIsSeeking(true)}
+                        onSeekingEnd={() => setIsSeeking(false)}
                     />
                 </div>
 
@@ -240,6 +253,8 @@ export default function Player({ source, type, poster }: PlayerProps) {
                         isFullScreen={fullScreen}
                         videoRef={videoRef}
                         onFullScreen={(status) => status ? enableFullScreen() : disableFullScreen()}
+                        onSeekingStart={() => setIsSeeking(true)}
+                        onSeekingEnd={() => setIsSeeking(false)}
                     />
                 </div>
 

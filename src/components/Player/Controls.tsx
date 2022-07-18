@@ -13,7 +13,7 @@ import Volume from './Volume';
 import { timeFormat } from './utils';
 import { ControlsProps } from './interfaces';
 
-export default function Controls({ videoRef, onPlay, onPause, isFullScreen = true, onFullScreen }: ControlsProps) {
+export default function Controls({ videoRef, onPlay, onPause, isFullScreen = true, onFullScreen, onSeekingStart, onSeekingEnd }: ControlsProps) {
 
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
     const [timeCurrent, setTimeCurrent] = useState<string>('0:00');
@@ -50,7 +50,7 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
     return (
         <div id="controls" className={styles.controls}>
 
-            <ProgressBar videoRef={videoRef} />
+            <ProgressBar videoRef={videoRef} onSeekingStart={onSeekingStart} onSeekingEnd={onSeekingEnd} />
 
             {/* Buttons Left */}
             <div id="buttons" className={styles.buttons}>

@@ -10,13 +10,8 @@ export default function ProgressBar({ videoRef, onSeekingStart, onSeekingEnd }: 
     const [previewTime, setPreviewTime] = useState<string>('0:00');
     const [bufferingProgress, setBufferingProgress] = useState<number>(0);
     const [loadingProgress, setLoadingProgress] = useState<number>(0);
-    const [isSeeking, setIsSeeking] = useState<boolean | null>(null);
-
-    useEffect(() => {
-        if (isSeeking === true) onSeekingStart && onSeekingStart();
-        if (isSeeking === false) onSeekingEnd && onSeekingEnd();
-    }, [isSeeking])
-
+    const [timedBar, setTimedBar] = useState<number>(0);
+    const [playOnSeekEnd, setPlayOnSeekEnd] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -67,6 +62,7 @@ export default function ProgressBar({ videoRef, onSeekingStart, onSeekingEnd }: 
 
         // Determine time and set thumb
         const percentage = 100 / (rangeWidth / (pointer - rangeLeft));
+        setTimedBar(percentage);
         const videoDuration = videoRef.current.duration;
         const time = Math.round(videoDuration * (percentage / 100))
         setPreviewTime(timeFormat(time));
@@ -74,15 +70,37 @@ export default function ProgressBar({ videoRef, onSeekingStart, onSeekingEnd }: 
     }
 
     const seekVideo = (e) => {
-        console.log("hereee")
         const val = e.target.value
         const current = videoRef.current.duration * (val / 100)
-        console.log(current)
+        setLoadingProgress(val);
         if (!isNaN(videoRef.current.duration)) {
             videoRef.current.currentTime = current
             document.querySelector(".videoTimeStatus .current").innerHTML = timeFormat(current)
-            document.getElementById("loadingProgress").style.width = val + '%'
+            document.getElementById("loadingProgressBar").style.width = val + '%'
         }
+    }
+
+    const onSeekingPressing = () => {
+
+        onSeekingStart && onSeekingStart();
+
+        // Video must be paused while seeking
+        // Save state before seeking
+        if (videoRef.current.paused) {
+            setPlayOnSeekEnd(false);
+        } else {
+            setPlayOnSeekEnd(true);
+            videoRef.current.pause()
+        }
+    }
+
+    const onSeekingReleased = async () => {
+
+        // After seeking release, play the video,
+        // unless it was paused before seeking
+        if (playOnSeekEnd) await videoRef.current.play();
+
+        onSeekingEnd && onSeekingEnd();
     }
 
     function reportProgress(e) {
@@ -96,11 +114,7 @@ export default function ProgressBar({ videoRef, onSeekingStart, onSeekingEnd }: 
             setBufferingProgress(100); // buffer 100%
         }
 
-
         setLoadingProgress(position);
-
-        //if (isSeeking === false) slider.value = position
-
     }
 
     function reportBuffer(e) {
@@ -115,10 +129,13 @@ export default function ProgressBar({ videoRef, onSeekingStart, onSeekingEnd }: 
         <>
             <div id="progressbar" className={styles.progressbar}>
                 <div className={styles.barBackground} />
+                <div id="timedBar" className={styles.timedBar} style={{
+                    width: `${timedBar}%`
+                }} />
                 <div id="bufferingProgress" className={styles.bufferingProgress} style={{
                     width: `${bufferingProgress}%`
                 }} />
-                <div id="loadingProgress" className={styles.loadingProgress} style={{
+                <div id="loadingProgressBar" className={styles.loadingProgressBar} style={{
                     width: `${loadingProgress}%`
                 }}>
                     <div className={styles.sliderThumb} />
@@ -132,11 +149,11 @@ export default function ProgressBar({ videoRef, onSeekingStart, onSeekingEnd }: 
                     value={loadingProgress}
                     onChange={seekVideo}
                     onMouseMove={seekBarHandler}
-                    onTouchMove={(e) => {
-                        seekBarHandler(e);
-                        setIsSeeking(true);
-                    }}
-                    onTouchEnd={() => setIsSeeking(false)}
+                    onMouseDown={onSeekingPressing}
+                    onMouseUp={onSeekingReleased}
+                    onTouchMove={(e) => seekBarHandler(e)}
+                    onTouchStart={onSeekingPressing}
+                    onTouchEnd={onSeekingReleased}
                 />
                 <div id="thumbnail" className={styles.thumbnail} ref={thumbnailRef}>
                     <span id="time-current" className={styles.timeCurrent}>{previewTime}</span>

@@ -91,11 +91,10 @@
 }
 
 .videoPlay.animate {
-    width: 240px;
-    height: 240px;
-    margin: -120px 0 0 -120px;
-    background-size: 120px;
-    transition: all 1s;
+    width: 180px;
+    height: 180px;
+    margin: -90px 0 0 -90px;
+    transition: all .7s;
     opacity: 0;
 }
 

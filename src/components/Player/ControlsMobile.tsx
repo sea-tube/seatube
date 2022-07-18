@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { timeFormat } from './utils';
 import { ControlsMobileProps } from './interfaces';
 
-export default function ControlsMobile({ videoRef, isFullScreen = false, onFullScreen }: ControlsMobileProps) {
+export default function ControlsMobile({ videoRef, isFullScreen = false, onFullScreen, onSeekingStart, onSeekingEnd }: ControlsMobileProps) {
 
     const [timeCurrent, setTimeCurrent] = useState<string>('0:00');
     const [timeDuration, setTimeDuration] = useState<string>('0:00');
@@ -21,6 +21,14 @@ export default function ControlsMobile({ videoRef, isFullScreen = false, onFullS
         }
     }, [videoRef])
 
+    useEffect(() => {
+        if (isSeeking) {
+            onSeekingStart && onSeekingStart();
+        } else {
+            onSeekingEnd && onSeekingEnd();
+        }
+    }, [isSeeking])
+
     const updateTime = (e) => {
         setTimeCurrent(timeFormat(e.target.currentTime));
         setTimeDuration(timeFormat(e.target.duration));
@@ -28,8 +36,6 @@ export default function ControlsMobile({ videoRef, isFullScreen = false, onFullS
 
     const toggleFullScreenMode = () => {
         onFullScreen && onFullScreen(!isFullScreen);
-        videoRef.current.pause()
-        videoRef.current.play()
     }
 
     return (

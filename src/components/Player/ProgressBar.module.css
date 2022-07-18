@@ -5,34 +5,6 @@
     position: relative;
 }
 
-.barBackground {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, .2);
-}
-
-.loadingProgress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 4px;
-    background-color: var(--slider-color);
-}
-
-.bufferingProgress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    height: 4px;
-    width: 0;
-    background-color: rgb(150, 150, 150);
-}
-
 .slider {
     background: transparent;
     cursor: pointer;
@@ -48,9 +20,53 @@
     background-color: transparent;
 }
 
+.barBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, .2);
+}
+
+.loadingProgressBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background-color: var(--slider-color);
+}
+
+.bufferingProgress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    height: 4px;
+    width: 0;
+    background-color: rgb(160, 160, 160);
+}
+
+.timedBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    height: 4px;
+    width: 0;
+    background-color: rgb(160, 160, 160, .6);
+    display: none;
+}
+
+.progressbar:hover .timedBar {
+    display: block;
+}
+
 .progressbar:hover .barBackground,
-.progressbar:hover .loadingProgress,
+.progressbar:hover .loadingProgressBar,
 .progressbar:hover .bufferingProgress,
+.progressbar:hover .timedBar,
 .progressbar:hover .slider {
     height: 6px;
     top: -1px;
@@ -95,9 +111,14 @@
     height: 16px;
     border-radius: 100%;
     background-color: var(--slider-color);
+    border-color: var(--slider-color);
     overflow: visible;
     cursor: pointer;
     opacity: 0;
+    transition-delay: .1s;
+}
+.progressbar:hover .slider::-webkit-slider-thumb {
+    opacity: 1;
 }
 
 /* ----- Firefox */
@@ -107,15 +128,11 @@
     height: 16px;
     border-radius: 100%;
     background-color: var(--slider-color);
+    border-color: var(--slider-color);
     overflow: visible;
     cursor: pointer;
     opacity: 0;
 }
-
-.progressbar:hover .slider::-webkit-slider-thumb {
-    opacity: 1;
-}
-
 .progressbar:hover .slider::-moz-range-thumb {
     opacity: 1;
 }
