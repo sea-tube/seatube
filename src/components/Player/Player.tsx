@@ -9,14 +9,15 @@ import { PlayerProps, VideoElement } from "./interfaces";
 import HlsPlay from './hls';
 import Controls from './Controls';
 import ControlsMobile from './ControlsMobile';
-import GraphConnect from './GraphConnect';
+import GraphConnect, { NodesData } from './GraphConnect';
 
 // Icons
 import PlayIcon from "./assets/icons/play.svg";
 import PauseIcon from "./assets/icons/pause.svg";
 import OvalLoading from "./assets/animations/oval.svg";
+import Hls, { Level } from "hls.js";
 
-export default function Player({ source, type, poster }: PlayerProps) {
+export default function Player({ source, type, poster, mediaResolution }: PlayerProps) {
 
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
@@ -28,6 +29,28 @@ export default function Player({ source, type, poster }: PlayerProps) {
     const [fullScreen, setFullScreen] = useState<boolean>(false);
     const [nativeFulScreen, setNativeFullScreen] = useState<boolean>(false);
     const [isSeeking, setIsSeeking] = useState<boolean>(false);
+    const [resolutions, setResolutions] = useState<Level[]>([]);
+    const [hlsController, setHlsController] = useState<Hls>(null);
+
+    const [nodesData, setNodesData] = useState<NodesData>([
+        { id: "seatube", name: "Seatube", connected: true },
+        { id: "infura", name: "Infura", connected: false },
+        { id: "livepeer", name: "Livepeer", connected: false },
+        { id: "nft-storage", name: "NFT.storage", connected: false },
+        { id: "gateway", name: "Gateway", connected: false },
+    ]);
+
+    useEffect(() => {
+        console.log("nodes data changed", nodesData);
+    }, [nodesData])
+
+    const connectToggle = () => {
+        const nodesDatac = [ ...nodesData ];
+        for (let i = 0; i < nodesDatac.length; i++) {
+            nodesDatac[i].connected = nodesDatac[i].connected ? false : true;
+        }
+        setNodesData(nodesDatac);
+    }
 
     const playerRef = useRef<HTMLDivElement>();
     const videoRef = useRef<VideoElement>();
@@ -71,12 +94,16 @@ export default function Player({ source, type, poster }: PlayerProps) {
 
         if (videoRef.current) {
 
-            // load hls
-            if (type == "hls") {
-                HlsPlay({ source, videoRef });
-            } else {
-                videoRef.current.src = source;
-            }
+            (async () => {
+                // load hls
+                if (type == "hls") {
+                    const hls = await HlsPlay({ source, videoRef, setResolutions });
+                    console.log("************* hls here", hls.levels)
+                    setHlsController(hls);
+                } else {
+                    videoRef.current.src = source;
+                }
+            })();
 
             // Detect full screen change
             ['fullscreenchange', 'webkitfullscreenchange'].forEach(
@@ -110,15 +137,17 @@ export default function Player({ source, type, poster }: PlayerProps) {
     const reportPlay = () => {
         setVideoPlay(true);
         setVideoPaused(false);
-        playerRef.current.classList.remove(styles.paused)
-        playerRef.current.classList.add(styles.playing)
+        playerRef.current.classList.remove(styles.paused);
+        playerRef.current.classList.add(styles.playing);
+        connectToggle();
     }
 
     const reportPause = () => {
         setVideoPlay(false);
         setVideoPaused(true);
-        playerRef.current.classList.remove(styles.playing)
-        playerRef.current.classList.add(styles.paused)
+        playerRef.current.classList.remove(styles.playing);
+        playerRef.current.classList.add(styles.paused);
+        connectToggle();
     }
 
     const reportWaiting = () => {
@@ -191,6 +220,9 @@ export default function Player({ source, type, poster }: PlayerProps) {
                 <video
                     id="video"
                     className={styles.video}
+                    style={{
+                        height: mediaResolution && playerRef.current ? playerRef.current.clientWidth / (mediaResolution.width / mediaResolution.height) : 'auto'
+                    }}
                     ref={videoRef}
                     poster={poster}
                     autoPlay={true}
@@ -245,6 +277,8 @@ export default function Player({ source, type, poster }: PlayerProps) {
                         onFullScreen={(status) => status ? enableFullScreen() : disableFullScreen()}
                         onSeekingStart={() => setIsSeeking(true)}
                         onSeekingEnd={() => setIsSeeking(false)}
+                    // resolutions={resolutions}
+                    // onChangeResolution={(index) => hlsController.nextLevel = index}
                     />
                 </div>
 
@@ -258,7 +292,11 @@ export default function Player({ source, type, poster }: PlayerProps) {
                     />
                 </div>
 
-                <GraphConnect />
+                {
+                    playerRef.current &&
+                    <GraphConnect nodes={nodesData} />
+                }
+
 
             </div>
         </>
