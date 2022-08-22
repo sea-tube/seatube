@@ -2,9 +2,9 @@ import styles from './Volume.module.css'
 import SoundIcon from "./assets/icons/sound.svg";
 import MuteIcon from "./assets/icons/mute.svg";
 import { useEffect, useState } from 'react';
-import { ControlsProps } from './interfaces';
+import { ControlsProps, VolumeProps } from './interfaces';
 
-export default function Volume({ videoRef }: ControlsProps) {
+export default function Volume({ videoRef }: VolumeProps) {
 
     const [volume, setVolume] = useState<number>(100);
     const [muted, setMuted] = useState<boolean>(false);

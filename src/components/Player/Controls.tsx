@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './Controls.module.css'
 
 import PlayIcon from "./assets/icons/play.svg";
@@ -13,11 +13,13 @@ import Volume from './Volume';
 import { timeFormat } from './utils';
 import { ControlsProps } from './interfaces';
 
-export default function Controls({ videoRef, onPlay, onPause, isFullScreen = true, onFullScreen, onSeekingStart, onSeekingEnd }: ControlsProps) {
+export default function Controls({ videoRef, onPlay, onPause, isFullScreen = true, onFullScreen, onSeekingStart, onSeekingEnd, resolutions, onChangeResolution }: ControlsProps) {
 
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
     const [timeCurrent, setTimeCurrent] = useState<string>('0:00');
     const [timeDuration, setTimeDuration] = useState<string>('0:00');
+
+    const resolutionsControlRef = useRef<HTMLDivElement>();
 
     useEffect(() => {
         if (videoRef.current.canPlayType) {
@@ -55,6 +57,10 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
         onFullScreen && onFullScreen(!isFullScreen);
     }
 
+    const toggleResolutionControl = () => {
+        resolutionsControlRef.current.classList.toggle(styles.resolutionsActive);
+    }
+
     return (
         <div id="controls" className={styles.controls}>
 
@@ -87,9 +93,17 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
 
                 {/* Buttons Right */}
                 <div className={styles.buttonsRight}>
-                    <button id="settings">
-                        <div id="resolutions" className={styles.resolutions}>
-                            <ul></ul>
+                    <button id="settings" className={styles.settings} onClick={toggleResolutionControl}>
+                        <div id="resolutions" className={styles.resolutions} ref={resolutionsControlRef}>
+                            <ul>
+                                {
+                                    resolutions?.map((resolution, index) => (
+                                        <li key={resolution.name} onClick={() => onChangeResolution(index)}>
+                                            {resolution.name}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
                         </div>
                         <SettingsIcon className={styles.buttonIcon} />
                     </button>

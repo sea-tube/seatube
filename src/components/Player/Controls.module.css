@@ -67,20 +67,24 @@
     display: none;
 }
 
+.settings {
+ position: relative;
+}
+
 .resolutions {
     width: 75px;
     position: absolute;
-    bottom: calc(100% + 20px);
+    bottom: calc(100% + 24px);
     left: -100%;
     color: white;
     background-color: #1a1a1a;
     border-radius: 2px;
     z-index: 1;
-    opacity: 0;
+    display: none;
 }
 
-.resolutions.active {
-    opacity: 1;
+.resolutionsActive {
+    display: block;
 }
 
 .resolutions ul {

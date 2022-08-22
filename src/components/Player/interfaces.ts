@@ -1,9 +1,16 @@
+import { Level } from "hls.js";
 import { RefObject } from "react";
+
+export interface MediaResolution {
+    width: number;
+    height: number;
+}
 
 export interface PlayerProps {
     source: string;
     poster?: string;
     type?: string;
+    mediaResolution?: MediaResolution;
 }
 
 export interface ControlsProps {
@@ -14,6 +21,8 @@ export interface ControlsProps {
     onFullScreen?: (status: boolean) => void;
     onSeekingStart?: () => void;
     onSeekingEnd?: () => void;
+    resolutions?: Level[];
+    onChangeResolution?: (index: number) => void;
 }
 
 export interface ControlsMobileProps {
@@ -22,6 +31,10 @@ export interface ControlsMobileProps {
     onFullScreen?: (status: boolean) => void;
     onSeekingStart?: () => void;
     onSeekingEnd?: () => void;
+}
+
+export interface VolumeProps {
+    videoRef: RefObject<HTMLVideoElement>;
 }
 
 export interface ProgressBarProps {
