@@ -6,10 +6,21 @@ body.no-scroll {
     overflow-y: hidden;
 }
 
-.dm-sans {
-    font-family: 'DM Sans', sans-serif;
+.inter {
+    font-family: 'Inter', sans-serif;
 }
 
 .containerMinHeight {
     min-height: calc(100vh - 144px);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }

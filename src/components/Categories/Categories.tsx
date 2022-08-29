@@ -22,6 +22,16 @@ export default function Categories({ categories, onSelected, defaultValue }: Cat
         }
     }, [active]);
 
+    useEffect(() => {
+        window.addEventListener('resize', handleResize)
+    }, []);
+
+    const handleResize = () => {
+        if (categoriesRef.current) {
+            categoriesRef.current.style.transform = `translateX(${0}px)`;
+        }
+    }
+
     const pressing = (e) => {
         const translatedX = Number(categoriesRef.current.style.transform.replace('translateX(', '').replace('px)', ''));
         setInitialTranslateX(translatedX);
@@ -56,7 +66,7 @@ export default function Categories({ categories, onSelected, defaultValue }: Cat
 
     return (
         <div className="overflow-x-auto no-scrollbar flex" ref={containerRef} >
-            <div className="mx-2 border-b border-gray-200 py-2 "
+            <div className="border-b border-gray-200 py-2 "
                 onMouseUp={release}
                 onMouseDown={pressing}
                 onMouseMove={scroll}
