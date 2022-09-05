@@ -3,7 +3,7 @@ import Head from "next/head"
 import { useState } from "react"
 import Layout from "../components/layout"
 import AuthContext from "../contexts/AuthContext"
-import { getVideo, videosData } from "../components/logic/Videos"
+import { VideoItem, videosData } from "../components/logic/Videos"
 import Categories from "components/Categories"
 
 const Home = () => {
@@ -20,7 +20,7 @@ const Home = () => {
 				<div className='flex flex-col w-full'>
 
 					<div className="sticky bg-gray-50 z-20 mb-4" style={{
-						top: 65,
+						top: 56 // Navbar height,
 					}}>
 						<Categories categories={
 							[
@@ -49,7 +49,7 @@ const Home = () => {
 						{
 							videosData.map((video, id) => (
 								<div key={id}>
-									{getVideo(id)}
+									<VideoItem id={id} />
 								</div>
 							))
 						}
