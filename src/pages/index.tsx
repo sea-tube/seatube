@@ -32,11 +32,11 @@ const Index = () => {
                 </div>
 
                 <div className="w-1/2 text-center absolute">
-                    <img src="/assets/logo.svg" className="w-2/3 m-auto" />
-                    <div className="text-2xl dm-sans">Your Web3 video platform.</div>
+                    <img src="/assets/logo.png" className="w-32 m-auto" />
+                    <div className="text-2xl ">Your Web3 video platform.</div>
                     <Link href="/home">
                         <a>
-                            <button className="mt-16 rounded-xl px-8 py-2 text-xl bg-blue-400 dm-sans font-medium bg-special-color">
+                            <button className="mt-16 rounded-xl px-8 py-2 text-xl bg-blue-400  font-medium bg-special-color">
                                 Get Started Now
                             </button>
                         </a>

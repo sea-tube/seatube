@@ -1,11 +1,21 @@
-import Image from "next/image"
 
-const Avatar = ({ avatarUrl }) => {
+type Sizes = 'small' | 'medium' | 'large';
+
+interface AvatarProps {
+	url: string;
+	size?: Sizes;
+}
+
+const sizes: Record<Sizes, number> = {
+	small: 28,
+	medium: 42,
+	large: 64
+}
+
+export default function Avatar ({ url, size = 'medium' }: AvatarProps) {
 	return (
-		<div className='flex rounded-full  ring-2 ring-offset-2 ring-teal-400'>
-			<img src={avatarUrl} className='rounded-full w-6 h-6 sm:w-8 sm:h-8' />
+		<div className='flex rounded-full  ring-2 ring-offset-2 ring-secondary-color'>
+			<img src={url} className='rounded-full' width={sizes[size]} height={sizes[size]} />
 		</div>
 	)
 }
-
-export default Avatar

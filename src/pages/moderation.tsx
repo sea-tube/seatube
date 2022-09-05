@@ -128,7 +128,7 @@ const Moderation = () => {
 											</div>
 										</div>
 										<div className="ml-2 px-2">
-											<div className="text-xl dm-sans">{moderator.name}</div>
+											<div className="text-xl ">{moderator.name}</div>
 											<div className=''>
 												{showTime()}
 											</div>
@@ -166,14 +166,14 @@ const Moderation = () => {
 											</div>
 										</div>
 										<div className="ml-2 px-2">
-											<div className="text-xl dm-sans">{moderator.name}</div>
+											<div className="text-xl ">{moderator.name}</div>
 											<div className=''>
 												{showTime()}
 											</div>
 										</div>
 										<div className="ml-2 px-2">
 											<div>
-												<button className="w-24 text-lg text-center dm-sans bg-green-400 rounded-lg"
+												<button className="w-24 text-lg text-center  bg-green-400 rounded-lg"
 													onClick={() => {
 														signAsHash(["string"], ["abc123"])
 															.then(console.info)
@@ -214,21 +214,21 @@ const Moderation = () => {
 											</div>
 										</div>
 										<div className="ml-2 px-2">
-											<div className="text-xl dm-sans">{video.name}</div>
-											<div className="text-sm dm-sans">Author Name</div>
+											<div className="text-xl ">{video.name}</div>
+											<div className="text-sm ">Author Name</div>
 											<div className=''>
 												{showTime()}
 											</div>
 										</div>
 										<div className="ml-2 px-2">
 											<div className="flex space-x-6">
-												<button className="w-24 text-lg text-center dm-sans bg-red-400 hover:bg-red-500 rounded-lg"
+												<button className="w-24 text-lg text-center  bg-red-400 hover:bg-red-500 rounded-lg"
 													onClick={() => signMessage(video.name)}
 												>
 													<ShieldExclamationIcon className="w-8 m-auto" />
 													Deny
 												</button>
-												<button className="w-24 text-lg text-center dm-sans bg-green-400 hover:bg-green-500 rounded-lg"
+												<button className="w-24 text-lg text-center  bg-green-400 hover:bg-green-500 rounded-lg"
 													onClick={() => {
 														signAsHash(["string"], ["abc123"])
 															.then(console.info)
@@ -239,7 +239,7 @@ const Moderation = () => {
 													Approve
 												</button>
 											</div>
-											<button className="w-full flex justify-center items-center mt-4 text-lg text-center dm-sans bg-red-500 hover:bg-red-600 rounded">
+											<button className="w-full flex justify-center items-center mt-4 text-lg text-center  bg-red-500 hover:bg-red-600 rounded">
 												Ban Account
 												<UserRemoveIcon className="w-4 ml-2" />
 											</button>

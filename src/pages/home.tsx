@@ -3,11 +3,11 @@ import Head from "next/head"
 import { useState } from "react"
 import Layout from "../components/layout"
 import AuthContext from "../contexts/AuthContext"
-import { getVideo, videosData } from "../components/logic/Videos"
+import { VideoItem, videosData } from "../components/logic/Videos"
+import Categories from "components/Categories"
 
 const Home = () => {
 
-	const [activeTab, setActiveTab] = useState("player")
 	const { user } = useContext(AuthContext)
 
 	return (
@@ -19,62 +19,37 @@ const Home = () => {
 			<Layout>
 				<div className='flex flex-col w-full'>
 
-					{/* Categories */}
-					<ul className='flex pl-0 mx-2 mb-4 list-none border-b-0 lg:justify-start overflow-x-auto overflow-hidden'>
-						<li className='nav-item'>
-							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase  hover:bg-secondary-color ${activeTab === "player"
-									? " border-teal-400 font-bold text-teal-600"
-									: ""
-									}`}
-								onClick={() => setActiveTab("player")}>
-								Crypto
-							</button>
-						</li>
-						<li className='nav-item'>
-							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase  hover:bg-secondary-color ${activeTab === "azul"
-									? " border-teal-400 font-bold text-teal-600"
-									: ""
-									}`}
-								onClick={() => setActiveTab("azul")}>
-								Technology
-							</button>
-						</li>
-						<li className='nav-item'>
-							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase  hover:bg-secondary-color ${activeTab === "verde"
-									? " border-teal-400 font-bold text-teal-600"
-									: ""
-									}`}
-								onClick={() => setActiveTab("verde")}>
-								Music
-							</button>
-						</li>
-						<li className='nav-item'>
-							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase  hover:bg-secondary-color ${activeTab === "amarelo" ? " border-teal-400 font-bold" : ""
-									}`}
-								onClick={() => setActiveTab("amarelo")}>
-								Humor
-							</button>
-						</li>
-						<li className='nav-item'>
-							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase  hover:bg-secondary-color ${activeTab === "amarelo" ? " border-teal-400 font-bold" : ""
-									}`}
-								onClick={() => setActiveTab("amarelo")}>
-								Politics
-							</button>
-						</li>
-					</ul>
+					<div className="sticky bg-gray-50 z-20 mb-4" style={{
+						top: 56 // Navbar height,
+					}}>
+						<Categories categories={
+							[
+								"All",
+								"Crypto",
+								"Music",
+								"Tech",
+								"Art",
+								"Sports",
+								"News",
+								"Humor",
+								"Science",
+								"Education",
+								"Politics",
+								"Entertainment",
+								"Travel",
+								"Food",
+								"Games",
+								"Other"
+							]
+						} defaultValue="All" />
+					</div>
 
 					{/* Videos */}
 					<div className="w-full flex flex-wrap justify-center sm:justify-start">
 						{
 							videosData.map((video, id) => (
 								<div key={id}>
-									{getVideo(id)}
+									<VideoItem id={id} />
 								</div>
 							))
 						}
