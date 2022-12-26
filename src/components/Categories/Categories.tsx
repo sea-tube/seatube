@@ -66,7 +66,7 @@ export default function Categories({ categories, onSelected, defaultValue }: Cat
 
     return (
         <div className="overflow-x-auto no-scrollbar flex" ref={containerRef} >
-            <div className="border-b border-gray-200 py-2 "
+            <div className="w-full border-b border-gray-200 py-2 "
                 onMouseUp={release}
                 onMouseDown={pressing}
                 onMouseMove={scroll}
@@ -83,8 +83,8 @@ export default function Categories({ categories, onSelected, defaultValue }: Cat
                         <li className='nav-item' key={index}>
                             <button
                                 className={classNames(
-                                    'block mx-4 py-1 text-gray-600 hover:text-teal border-b-2 border-transparent text-xs font-medium leading-tight',
-                                    (active == category) ? 'border-teal-muted font-bold text-teal' : ''
+                                    'block mx-4 py-1 text-gray-600 hover:text-primary-dark border-b-2 border-transparent text-xs font-medium leading-tight',
+                                    (active == category) ? 'border-primary-dark-muted font-bold text-primary-dark' : ''
                                 )}
                                 onClick={() => setActive(category)}>
                                 {category}

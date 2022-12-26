@@ -9,6 +9,7 @@ import {
     XIcon,
 } from '@heroicons/react/solid'
 import { Listbox, Transition } from '@headlessui/react'
+import Avatar from 'components/layout/avatar'
 
 const moods = [
     { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
@@ -29,15 +30,11 @@ export default function NewComment() {
     return (
         <div className="flex items-start space-x-2 sm:space-x-4">
             <div className="flex-shrink-0">
-                <img
-                    className="inline-block h-10 w-10 rounded-full"
-                    src="https://github.com/random.png"
-                    alt=""
-                />
+                <Avatar url="https://github.com/random.png" />
             </div>
             <div className="min-w-0 flex-1">
                 <form action="#" className="relative">
-                    <div className="border border-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-special-color focus-within:ring-1 focus-within:ring-indigo-500">
+                    <div className="border border-gray-200 rounded-lg shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary-dark-muted">
                         <label htmlFor="comment" className="sr-only">
                             Add your comment
                         </label>
@@ -45,7 +42,7 @@ export default function NewComment() {
                             rows={3}
                             name="comment"
                             id="comment"
-                            className="block w-full py-3 border-0 resize-none focus:ring-0 sm:text-sm bg-primary-color"
+                            className="block w-full py-3 border-0 resize-none focus:ring-0 sm:text-sm bg-white"
                             placeholder="Add your comment..."
                             defaultValue={''}
                         />
@@ -145,7 +142,7 @@ export default function NewComment() {
                         <div className="flex-shrink-0">
                             <button
                                 type="submit"
-                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-special-color hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark-muted"
                             >
                                 Post
                             </button>

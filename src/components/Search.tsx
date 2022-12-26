@@ -38,16 +38,16 @@ export function SearchBar({ onFocus, onBlur }: SearchBarProps) {
 
     return (
         <>
-            <div className="w-full transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white ring-1 ring-black ring-opacity-5 transition-all">
+            <div className="w-full transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-gray-50 ring-1 ring-gray-200 transition-all">
                 <Combobox value={query} onChange={(id) => openVideo(id)}>
                     <div className="relative">
 
-                        <svg xmlns="http://www.w3.org/2000/svg" className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="pointer-events-none absolute top-2.5 left-4 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
 
                         <Combobox.Input
-                            className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm"
+                            className="h-10 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm"
                             placeholder="Search..."
                             onChange={(event) => setQuery(event.target.value)}
                             onFocus={() => onFocus && onFocus()}
@@ -61,7 +61,7 @@ export function SearchBar({ onFocus, onBlur }: SearchBarProps) {
                                     key={video.id}
                                     value={video.id}
                                     className={({ active }) =>
-                                        classNames('cursor-pointer select-none px-4 py-2', active && 'bg-secondary-color text-white')
+                                        classNames('cursor-pointer select-none px-4 py-2', active && 'bg-primary-light text-white')
                                     }
                                     onSelect={() => console.log(video.href)}
                                 >

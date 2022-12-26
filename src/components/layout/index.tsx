@@ -11,7 +11,7 @@ const Layout = ({ children, containerBg }: any) => {
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
 				<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 			</Head>
-			<div className="bg-primary-color text-slate-800 dark:text-white font-inter inter">
+			<div className="bg-background-muted text-slate-800font-inter inter">
 				<Navbar />
 				<Sidebar />
 				<div className='w-screen sm:pl-24 sm:p-4 containerMinHeight' style={{

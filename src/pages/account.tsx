@@ -19,7 +19,7 @@ const Account = () => {
 			<Layout>
 				<div className='flex flex-col w-full'>
 
-					<div className="w-full h-60 max-w-7xl bg-secondary-color">
+					<div className="w-full h-60 max-w-7xl bg-primary-light">
 
 						{/* cover */}
 						<div className="w-full h-24 bg-blue-400">
@@ -47,18 +47,18 @@ const Account = () => {
 								</div>
 
 								<div className='flex flex-1 mt-6'>
-									<button className='px-6 py-2 mr-4 uppercase border border-teal-500 rounded-lg hover:bg-teal-100'
+									<button className='px-6 py-2 mr-4 uppercase border border-primary-dark-500 rounded-lg hover:bg-primary-dark-100'
 										// onClick={() => deposit(1.50)}
 									>
 										deposit
 									</button>
-									<button className='px-6 py-2 mr-4 uppercase border border-teal-500 rounded-lg hover:bg-teal-100'>
+									<button className='px-6 py-2 mr-4 uppercase border border-primary-dark-500 rounded-lg hover:bg-primary-dark-100'>
 										withdraw
 									</button>
 								</div>
 							</div>
 
-							<div className='block w-full py-6 pl-6 mt-6 border-t bg-secondary-color'>
+							<div className='block w-full py-6 pl-6 mt-6 border-t bg-primary-light'>
 								Account: {user?.account}
 							</div>
 						</div>

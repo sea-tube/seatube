@@ -10,19 +10,14 @@ module.exports = {
 				'inter': ['Inter', 'sans-serif']
 			},
 			colors: {
-				"primary-color": "#f8fafc",
-				"secondary-color": "#6bc4cc",
-				"special-color": "#39AABB",
 
-				"dark-primary-color": "#12121E",
-				"dark-secondary-color": "#19192B",
-				"dark-special-color": "#39AABB",
+				"background": "#fff",
+				"background-muted": "#f8fafc",
 
-				"aqua": "#6bc4cc",
-				"teal": "#388084",
-				"teal-muted": "#459a9c",
-				"green": "#18b894",
-				"charcoal": "#34373f"
+				"primary": "#39AABB",
+				"primary-light": "#6bc4cc",
+				"primary-dark": "#388084",
+				"primary-dark-muted": "#459a9c",
 			},
 			spacing: {
 				19: "4.8rem",
@@ -36,6 +31,9 @@ module.exports = {
 				53: "13.3rem",
 				"7x11": "82rem",
 			},
+			screens: {
+				'3xl': '1729px',
+			}
 		},
 	},
 	plugins: [

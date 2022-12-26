@@ -66,8 +66,8 @@ const Moderation = () => {
 					<ul className='flex flex-row flex-wrap pl-0 mb-4 list-none border-b-0 nav nav-tabs md:flex-row'>
 						<li className='nav-item'>
 							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-secondary-color ${activeTab === "player"
-									? " border-teal-400 font-bold text-teal-600"
+								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-primary-light ${activeTab === "player"
+									? " border-primary-dark-400 font-bold text-primary-dark-600"
 									: ""
 									}`}
 								onClick={() => setActiveTab("activeModerators")}
@@ -77,8 +77,8 @@ const Moderation = () => {
 						</li>
 						<li className='nav-item'>
 							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-secondary-color ${activeTab === "player"
-									? " border-teal-400 font-bold text-teal-600"
+								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-primary-light ${activeTab === "player"
+									? " border-primary-dark-400 font-bold text-primary-dark-600"
 									: ""
 									}`}
 								onClick={() => setActiveTab("pendingModerators")}
@@ -88,8 +88,8 @@ const Moderation = () => {
 						</li>
 						<li className='nav-item'>
 							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-secondary-color ${activeTab === "azul"
-									? " border-teal-400 font-bold text-teal-600"
+								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-primary-light ${activeTab === "azul"
+									? " border-primary-dark-400 font-bold text-primary-dark-600"
 									: ""
 									}`}
 								onClick={() => setActiveTab("videosModeration")}>
@@ -98,8 +98,8 @@ const Moderation = () => {
 						</li>
 						<li className='nav-item'>
 							<button
-								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-secondary-color ${activeTab === "azul"
-									? " border-teal-400 font-bold text-teal-600"
+								className={`block px-6 py-3 my-2 border-b-4 border-transparent text-xs font-medium leading-tight uppercase hover:bg-primary-light ${activeTab === "azul"
+									? " border-primary-dark-400 font-bold text-primary-dark-600"
 									: ""
 									}`}
 								onClick={() => alert("confirm you accept the terms")}>
@@ -118,7 +118,7 @@ const Moderation = () => {
 
 								data.moderators.active.map((moderator, id) =>
 
-									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg' key={id}>
+									<div className='flex items-center justify-between pr-4 mb-4rounded-lg' key={id}>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">
 											<div className="w-full h-40 bg-black flex justify-center rounded">
 												<img src={moderator.avatar}
@@ -156,7 +156,7 @@ const Moderation = () => {
 
 								data.moderators.pending.map((moderator, id) =>
 
-									<div className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg' key={id}>
+									<div className='flex items-center justify-between pr-4 mb-4 bg-background rounded-lg' key={id}>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">
 											<div className="w-full h-40 bg-black flex justify-center rounded">
 												<img src={moderator.avatar}
@@ -204,7 +204,7 @@ const Moderation = () => {
 
 								data.videos.map((video, id) =>
 
-									<div key={id} className='flex items-center justify-between pr-4 mb-4 bg-primary-color rounded-lg relative'>
+									<div key={id} className='flex items-center justify-between pr-4 mb-4 bg-background rounded-lg relative'>
 										<div className="w-80 hover:text-gray-300 cursor-pointer relative">
 											<div className="w-full h-40 bg-black flex justify-center rounded">
 												<img src={video.poster}
@@ -275,13 +275,13 @@ const Moderation = () => {
 						<div className='flex items-center space-x-4'>
 							<a
 								href='#'
-								className='w-32 inline-flex items-center justify-center flex-1 px-2 py-2 text-sm font-medium text-center text-white bg-teal-400 rounded-lg hover:bg-teal-500 focus:ring-4 focus:ring-cyan-200'>
+								className='w-32 inline-flex items-center justify-center flex-1 px-2 py-2 text-sm font-medium text-center text-white bg-primary-dark-400 rounded-lg hover:bg-primary-dark-500 focus:ring-4 focus:ring-cyan-200'>
 								<Svg classe='-ml-1 mr-1 h-5 w-5' icon='left_arrow_bold' />
 								Previous
 							</a>
 							<a
 								href='#'
-								className='w-32 inline-flex items-center justify-center flex-1 px-2 py-2 text-sm font-medium text-center text-white bg-teal-400 rounded-lg hover:bg-teal-500 focus:ring-4 focus:ring-cyan-200'>
+								className='w-32 inline-flex items-center justify-center flex-1 px-2 py-2 text-sm font-medium text-center text-white bg-primary-dark-400 rounded-lg hover:bg-primary-dark-500 focus:ring-4 focus:ring-cyan-200'>
 								Next
 								<Svg classe='-mr-1 ml-1 h-5 w-5' icon='right_arrow_bold' />
 							</a>

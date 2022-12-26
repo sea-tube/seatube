@@ -193,7 +193,7 @@ export function Web3Provider({ children }: any) {
 					<div>
 						<h3 className='text-xl text-gray-500'>Invalid Network!</h3>
 						<p className='text-base text-gray-600'>Please change your metamask network to continue.</p>
-						<button className="group h-14 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 items-center"
+						<button className="group h-14 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark-muted items-center"
 						>
 							<img src="/assets/metamask.svg" className="w-8 mr-4" />
 							<h3 className="text-base text-white">Change Metamask Network</h3>

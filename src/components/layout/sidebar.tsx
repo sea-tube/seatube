@@ -81,9 +81,9 @@ export default function Sidebar() {
 				className={`absolute top-0 left-0 w-screen h-screen bg-black/60 z-30 ${!sideBarActive && 'hidden'}`}
 				onClick={() => setSideBarActive(!sideBarActive)}
 			/>
-			<aside className={`fixed top-0 left-0 border-r dark:border-r-2 border-gray-100 z-30 bg-white ${sideBarActive ? 'h-screen' : 'sm:h-screen'}`}>
-				<div className={`flex flex-col overflow-x-auto overflow-x-hidden ${sideBarActive ? 'w-64' : 'w-14'} h-full transition-width duration-500 transform -translate-x-full bg-white dark:bg-primary-color sidebar lg:translate-x-0 lg:block lg:mt-0`} ref={sideBarRef}>
-					<div className='pl-1 flex items-center hover:cursor-pointer hover:bg-secondary-color'
+			<aside className={`fixed top-0 left-0 border-r border-gray-100 z-30 bg-white ${sideBarActive ? 'h-screen' : 'sm:h-screen'}`}>
+				<div className={`flex flex-col overflow-x-auto ${sideBarActive ? 'w-64' : 'w-14'} h-full transition-width duration-500 transform -translate-x-full bg-white sidebar lg:translate-x-0 lg:block lg:mt-0`} ref={sideBarRef}>
+					<div className='pl-1 flex items-center hover:cursor-pointer hover:bg-primary-light'
 						onClick={() => setSideBarActive(!sideBarActive)}
 					>
 						<div className="flex flex-1 flex-col">
@@ -112,7 +112,7 @@ export default function Sidebar() {
 								navigation.map((tab, index) => (
 									<Link href={tab.href} key={index}>
 										<a
-											className='flex items-center p-2 mb-4 rounded hover:cursor-pointer hover:bg-secondary-color text-gray-400 hover:text-white'>
+											className='flex items-center p-2 mb-4 rounded hover:cursor-pointer hover:bg-primary-light text-gray-400 hover:text-white'>
 											<div><tab.icon className="w-5" /></div>
 											<div className={classNames(
 												`mx-2 font-bold text-md transition ease-in-out duration-700 absolute ml-8 z-10`,
@@ -134,7 +134,7 @@ export default function Sidebar() {
 								adminTabs.map((tab, index) => (
 									<Link href={tab.href} key={index}>
 										<a
-											className='flex items-center p-2 mb-4 rounded hover:cursor-pointer hover:bg-secondary-color text-gray-400 hover:text-white'>
+											className='flex items-center p-2 mb-4 rounded hover:cursor-pointer hover:bg-primary-light text-gray-400 hover:text-white'>
 											<div><tab.icon className="w-5" /></div>
 											<div className={classNames(
 												`mx-2 font-bold text-md transition ease-in-out duration-700 absolute ml-8 z-10`,

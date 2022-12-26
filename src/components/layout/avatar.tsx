@@ -14,7 +14,7 @@ const sizes: Record<Sizes, number> = {
 
 export default function Avatar ({ url, size = 'medium' }: AvatarProps) {
 	return (
-		<div className='flex rounded-full  ring-2 ring-offset-2 ring-secondary-color'>
+		<div className='flex rounded-full  ring-2 ring-offset-2 ring-primary-light'>
 			<img src={url} className='rounded-full' width={sizes[size]} height={sizes[size]} />
 		</div>
 	)

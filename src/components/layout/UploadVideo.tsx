@@ -62,7 +62,7 @@ export default function Modal(props) {
         <Transition.Root show={open} as={Fragment}>
             <Dialog
                 as='div'
-                className='fixed z-10 inset-0 overflow-y-auto'
+                className='fixed z-30 inset-0 overflow-y-auto'
                 onClose={onClose}
             >
                 <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
@@ -94,20 +94,15 @@ export default function Modal(props) {
                         leaveFrom='opacity-100 translate-y-0 sm:scale-100'
                         leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
                     >
-                        <div className='inline-block align-bottom bg-secondary-color text-white rounded-lg px-4 pt-24 pb-16 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full sm:w-1/3' style={{
-                            backgroundImage: 'url(/assets/ellipse-bg.svg)',
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover"
-                        }}>
-
-                            <div className="absolute top-0 right-0 p-3 font-medium text-2xl text-white hover:text-red-500 cursor-pointer" onClick={() => onClose(false)}>
+                        <div className='inline-block align-bottom bg-white text-gray-600 rounded-lg px-4 pt-24 pb-16 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full sm:w-1/3'>
+                            <div className="absolute top-0 right-0 p-3 font-medium text-2xl text-gray-600 hover:text-red-500 cursor-pointer" onClick={() => onClose(false)}>
                                 X
                             </div>
 
                             <div>
                                 <div className='mx-auto flex items-center justify-center'>
                                     <CloudUploadIcon
-                                        className='w-16 text-white solid-fill'
+                                        className='w-16 text-primary solid-fill'
                                         aria-hidden='true'
                                     />
                                 </div>
@@ -145,7 +140,7 @@ export default function Modal(props) {
                                     }
                                     {status && status != "finished" && <li className="w-full flex justify-center space-x-2 items-center">
                                         <span>{status == "exporting" ? "exporting to IPFS" : status}</span>
-                                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <svg className="animate-spin h-4 w-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
@@ -158,7 +153,7 @@ export default function Modal(props) {
                                                 <Link href={`/watch/${ipfsCID}`}>
                                                     <a>
                                                         <div
-                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-primary shadow-sm px-4 py-2 text-base font-medium text-gray-600 hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
                                                         >Open Video</div>
                                                     </a>
                                                 </Link>
@@ -167,7 +162,7 @@ export default function Modal(props) {
                                                 <Link href={`https://livepeer.com/mint-nft?tokenUri=ipfs://${ipfsCID}`}>
                                                     <a>
                                                         <div
-                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-special-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
+                                                            className='relative inline-flex justify-center items-center w-48 h-8 rounded-md border border-primary shadow-sm px-4 py-2 text-base font-medium text-gray-600 hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer'
                                                         >Mint NFT</div>
                                                     </a>
                                                 </Link>
@@ -175,9 +170,9 @@ export default function Modal(props) {
                                         </>
                                         : <label htmlFor={!status ? "video-upload" : ""}>
                                             <div
-                                                className={`relative inline-flex justify-center w-48 h-8 rounded-md border border-special-color shadow-sm px-4 py-2 text-base font-medium text-white ${!status && 'hover:bg-special-color'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer`}
+                                                className={`relative inline-flex justify-center w-48 h-8 rounded-md border border-primary shadow-sm px-4 py-2 text-base font-medium text-gray-600 ${!status && 'hover:bg-primary'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm hover:cursor-pointer`}
                                             >
-                                                <div className="bg-special-color absolute top-0 left-0 h-full rounded-md" style={{
+                                                <div className="bg-primary absolute top-0 left-0 h-full rounded-md" style={{
                                                     width: `${100 * loadedProgress}%`
                                                 }}></div>
                                                 <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
