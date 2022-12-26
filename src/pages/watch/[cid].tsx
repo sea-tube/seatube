@@ -200,7 +200,7 @@ export default function Watch() {
                                 {
                                     videosData.map((video, id) => (
                                         <div key={id}>
-                                            <VideoItem key={id} id={id} />
+                                            <VideoItem id={id} />
                                         </div>
                                     ))
                                 }

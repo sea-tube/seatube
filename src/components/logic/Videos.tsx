@@ -16,7 +16,6 @@ export const videosData = require('../../data/videos.json')
 interface VideoItemProps {
   id: string
   thumbs?: string
-  key: number | string
 }
 
 // Set thumb
@@ -35,7 +34,7 @@ function thumbPosition(time: number) {
   return position
 }
 
-export function VideoItem({ id, thumbs, key }: VideoItemProps) {
+export function VideoItem({ id, thumbs }: VideoItemProps) {
   const [isMouseOver, setIsMouseOver] = useState(false)
   const duration = 780
 
