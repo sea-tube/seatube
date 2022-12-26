@@ -54,7 +54,7 @@ export default function HlsPlay({ source, videoRef, setResolutions }: HlsPlayPro
         if (Hls.isSupported()) {
             const hls = new Hls({ loader: customLoader });
 
-            window.hls = hls
+            (window as any).hls = hls
 
             // ## external crypto key support en
             console.log(source)
