@@ -64,6 +64,7 @@ export function VideoItem({ id, thumbs }: VideoItemProps) {
       key={id}
       onMouseEnter={() => setIsMouseOver(true)}
       onMouseLeave={() => setIsMouseOver(false)}
+      className='list-none mb-4'
     >
       <Link href={`/watch/${videosData[id].nftMetadataCid}`}>
         <a>
