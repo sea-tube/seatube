@@ -23,6 +23,7 @@ export interface ControlsProps {
     onSeekingEnd?: () => void;
     resolutions?: Level[];
     onChangeResolution?: (index: number) => void;
+    onPeers?: () => void;
 }
 
 export interface ControlsMobileProps {

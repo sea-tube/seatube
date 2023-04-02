@@ -4,7 +4,7 @@ import styles from './Controls.module.css'
 import PlayIcon from "./assets/icons/play.svg";
 import PauseIcon from "./assets/icons/pause.svg";
 import SettingsIcon from "./assets/icons/settings.svg";
-import SeekIcon from "./assets/icons/seek.svg";
+import PeersIcon from "./assets/icons/peers.svg";
 import ExpandIcon from "./assets/icons/expand.svg";
 import ShrinkIcon from "./assets/icons/shrink.svg";
 
@@ -13,16 +13,16 @@ import Volume from './Volume';
 import { timeFormat } from './utils';
 import { ControlsProps } from './interfaces';
 
-export default function Controls({ videoRef, onPlay, onPause, isFullScreen = true, onFullScreen, onSeekingStart, onSeekingEnd, resolutions, onChangeResolution }: ControlsProps) {
+export default function Controls({ videoRef, onPlay, onPause, isFullScreen = true, onFullScreen, onSeekingStart, onSeekingEnd, resolutions, onChangeResolution, onPeers }: ControlsProps) {
 
     const [videoPlay, setVideoPlay] = useState<boolean>(false);
     const [timeCurrent, setTimeCurrent] = useState<string>('0:00');
     const [timeDuration, setTimeDuration] = useState<string>('0:00');
 
-    const resolutionsControlRef = useRef<HTMLDivElement>();
+    const resolutionsControlRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (videoRef.current.canPlayType) {
+        if (videoRef.current?.canPlayType) {
             // add event-handlers to listen video status
             videoRef.current.addEventListener("updateTime", updateTime, false);
             videoRef.current.addEventListener("durationchange", updateTime, false);
@@ -42,13 +42,13 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
     }
 
     const play = () => {
-        videoRef.current.play();
+        videoRef.current?.play();
     }
     const pause = () => {
-        videoRef.current.pause();
+        videoRef.current?.pause();
     }
 
-    const updateTime = (e) => {
+    const updateTime = (e: any) => {
         setTimeCurrent(timeFormat(e.target.currentTime));
         setTimeDuration(timeFormat(e.target.duration));
     }
@@ -58,7 +58,7 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
     }
 
     const toggleResolutionControl = () => {
-        resolutionsControlRef.current.classList.toggle(styles.resolutionsActive);
+        resolutionsControlRef.current?.classList.toggle(styles.resolutionsActive);
     }
 
     return (
@@ -98,7 +98,7 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
                             <ul>
                                 {
                                     resolutions?.map((resolution, index) => (
-                                        <li key={resolution.name} onClick={() => onChangeResolution(index)}>
+                                        <li key={resolution.name} onClick={() => onChangeResolution && onChangeResolution(index)}>
                                             {resolution.name}
                                         </li>
                                     ))
@@ -107,8 +107,8 @@ export default function Controls({ videoRef, onPlay, onPause, isFullScreen = tru
                         </div>
                         <SettingsIcon className={styles.buttonIcon} />
                     </button>
-                    <button className="seek-slides" id="seek-slides">
-                        <SeekIcon className={styles.buttonIcon} />
+                    <button id="seek-slides" onClick={onPeers}>
+                        <PeersIcon className={styles.buttonIcon} />
                     </button>
                     <button id="full-screen" onClick={() => toggleFullScreenMode()}>
                         {
