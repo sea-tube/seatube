@@ -81,8 +81,9 @@ export default function Watch({ cid, video }: WatchProps) {
                   </div>
                   <div className="py-2">
                     <p>
-                      Keep your focus and concentration with this ambient study
-                      music to concentrate from Quiet Quest - Study Music...
+                        {
+                            video.metadata.description
+                        }
                     </p>
                   </div>
                 </div>
