@@ -1,209 +1,202 @@
-import { useState, createContext, useContext, useEffect } from "react"
-import Web3 from "web3"
-import { useRouter } from "next/router"
-import ToastContext from "./ToastContext"
-import Modal from '../components/layout/Modal'
-import { FaTimesCircle } from 'react-icons/fa';
-import AuthContext from "../contexts/AuthContext"
-import { useMoralis, useMoralisWeb3Api } from "react-moralis";
-import { ethers } from "ethers";
+import Modal from 'components/layout/Modal'
+import { useMoralis } from "react-moralis";
+import { createContext, useContext, useEffect, useState } from "react";
+import { XCircleIcon } from "@heroicons/react/outline";
+import ToastContext from "./ToastContext";
 
-const networks: any = {
-	1: 'Ethereum Mainnet',
-	4: 'Ethereum Rinkeby',
-	97: 'Binance Smart Chain Testnet',
-	80001: 'Polygon Mumbai Testnet',
-	5777: 'Ganache',
-	1666600000: 'Harmony'
+const ACTIVE_NETWORK = "testnet"
+const NETWORK_SETTINGS: any = {
+    mainnet: {
+        name: 'Celo (Mainnet)',
+        chainId: 42220,
+        rpcUrl: 'https://forno.celo.org',
+        currencyName: 'Celo',
+        currencySymbol: 'CELO',
+        blockExplorerUrl: 'https://explorer.celo.org'
+    },
+    testnet: {
+        name: 'Celo (Alfajores Testnet)',
+        chainId: 44787,
+        rpcUrl: 'https://alfajores-forno.celo-testnet.org',
+        currencyName: 'Celo',
+        currencySymbol: 'CELO',
+        blockExplorerUrl: 'https://alfajores-blockscout.celo-testnet.org'
+    }
 }
 
 type Web3ContextType = {
-	walletAddress: string;
+	account: string | null;
+	signMessage: any;
+	connectWallet: any;
 	web3: any;
-	account: any;
+	connectMobileWallet: any;
+	isWeb3Enabled: boolean;
+	isWeb3EnableLoading: boolean;
+	provider: any;
 }
-
-const networkParams = {
-	bsc: {
-		mainnet: {
-			chainId: '0x38', // Hexadecimal version of 56, prefixed with 0x
-			chainName: "Smart Chain",
-			nativeCurrency: {
-				name: "Binance Coin",
-				symbol: "BNB",
-				decimals: 18,
-			},
-			rpcUrls: ['https://bsc-dataseed.binance.org/'],
-			blockExplorerUrls: ['https://bscscan.com'],
-			iconUrls: [""]
-		},
-		testnet: {
-			chainId: '0x61', // Hexadecimal version of 97, prefixed with 0x
-			chainName: "Smart Chain Testnet",
-			nativeCurrency: {
-				name: "Binance Coin",
-				symbol: "BNB",
-				decimals: 18,
-			},
-			rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
-			blockExplorerUrls: ['https://testnet.bscscan.com/'],
-			iconUrls: [""]
-		}
-	}
-}
-
-const ABI = [{
-	"inputs": [
-        {
-          "internalType": "string",
-          "name": "videoName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "cid",
-          "type": "string"
-        },
-        {
-          "internalType": "bytes[]",
-          "name": "permissionProofs",
-          "type": "bytes[]"
-        }
-      ],
-      "name": "publishVideo",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-}];
 
 const Web3Context = createContext({} as Web3ContextType)
 
+export default Web3Context
+
+
 export function Web3Provider({ children }: any) {
 
-	//const { authenticate, isAuthenticated, user } = useMoralis();
+    const {
+        Moralis,
+        web3,
+        chainId,
+        account,
+        enableWeb3,
+        isWeb3Enabled,
+        isWeb3EnableLoading,
+        deactivateWeb3,
+        web3EnableError,
+        provider,
+    } = useMoralis();
 
-	const { account, Web3API } = useMoralisWeb3Api();
-	const { Moralis, web3, isInitialized, chainId, account: walletAddress, user, enableWeb3, isWeb3Enabled, web3EnableError, authenticate, provider } = useMoralis();
+    const [invalidNetwork, setInvalidNetwork] = useState<boolean>(false)
 
-	const [providerInfo, setProviderInfo] = useState<any>(null)
+	const { showError } = useContext(ToastContext)
 
-	const [invalidNetwork, setInvalidNetwork] = useState<boolean>(false)
+    const signMessage = (message: string) => new Promise((resolve, reject) => {
+        web3 !== null ? web3?.getSigner().signMessage(message).then(resolve).catch(reject) : reject("web3 not enabled")
+    })
 
-	const { showSuccess, showError, showLoading } = useContext(ToastContext)
+    const connectMetamask = () => new Promise((resolve, reject) => {
+        enableWeb3({
+            provider: "metamask",
+            chainId: NETWORK_SETTINGS[ACTIVE_NETWORK].chainId,
+            onSuccess: (res: any) => {
+                if (res.network.chainId != NETWORK_SETTINGS[ACTIVE_NETWORK].chainId) {
+                    switchNetwork()
+                        .then(resolve)
+                        .catch(reject)
+                } else {
+                    resolve(res)
+                    console.info("Success!", res)
+                }
+            },
+            onError: (err: any) => {
+                console.error("connect metamask error", err);
+                reject(err);
+            },
+            throwOnError: true
+        })
+    })
 
-	const router = useRouter()
+    const connectWallet = () => {
+        return new Promise((resolve, reject) => {
+            connectMetamask()
+                .then(resolve)
+                .catch(reject)
+            //     .finally(() => {
+            //         setFirstWeb3Loading(false)
+            //         setFirstWeb3Loaded(true)
+            //     })
+            // setTimeout(() => {
+            //     if (!firstWeb3Loaded) setFirstWeb3Loading(true)
+            // }, 1000)
 
-	const [web3x, setWeb3] = useState<any>(null)
-	const [accountx, setAccount] = useState<string | null>(null)
+        })
+    }
 
-	useEffect(() => {
-		console.log(isWeb3Enabled)
-		if (!isWeb3Enabled) {
-			return
-			console.log("enabling web3")
-			enableWeb3({
-				provider: "metamask",
-				chainId: 43113,
-				onSuccess: (res: any) => console.info("Success!", res),
-				onComplete: () => console.info("Completed!"),
-				onError: (err: any) => console.error(err),
-				throwOnError: true
-			})
-		}
-	}, [])
+    const connectMobileWallet = () => {
+        enableWeb3(
+            {
+                provider: 'walletconnect',
+                anyNetwork: true,
+                onSuccess: (response: any) => console.log(response),
+                onError: (error: any) => {
+                    console.error("here:", error)
+                    console.error("code:", error.code)
+                },
+            }
+        )
+    }
 
-	useEffect(() => {
-		if (web3EnableError) alert(web3EnableError)
-	}, [web3EnableError])
+    useEffect(() => {
+        if (!account && isWeb3Enabled) {
+            console.log("deactivating web3")
+            deactivateWeb3()
+        }
+    }, [account])
 
-	useEffect(() => {
-		if (isInitialized) {
-			console.log(account)
-			console.log(walletAddress)
-			//fetchERC20Balance().then((balance) => console.log(balance));
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isInitialized, chainId, walletAddress])
+    useEffect(() => {
+        if (web3EnableError) {
+            if ("code" in web3EnableError) {
+                if (web3EnableError["code"] == "-32002") {
+                    showError("Mematamask contém solicitações pendentes")
+                } else if (web3EnableError["code"] == "-32603") {
+                    showError("Erro ao conectar com a rede")
+                } else if (web3EnableError["code"] == "4001") {
+                    showError("Rejeitado pelo usuário")
+                } else if ("message" in web3EnableError) {
+                    showError(web3EnableError["message"])
+                } else {
+                    showError(JSON.stringify(web3EnableError))
+                }
+            }
+        }
+    }, [web3EnableError])
 
-	const fetchERC20Balance = async () => {
-		const params: any = {
-			chain: "97" // Smart Chain - Testnet
-		}
-		return await account
-			.getTokenBalances({
-				address: walletAddress,
-				chain: params?.chain || chainId,
-			})
-			.then((result) => result);
-	};
+    // Detect Invalid Network
+    useEffect(() => {
+        if (!web3 || !chainId) return
+        if (Number(chainId) != Number(NETWORK_SETTINGS[ACTIVE_NETWORK].chainId) && web3.provider.isMetaMask) setInvalidNetwork(true)
+    }, [web3, chainId])
 
-	useEffect(() => {
+    // Switch network and add if not present
+    const switchNetwork = () => {
+        return new Promise((resolve, reject) => {
+            Moralis.switchNetwork(NETWORK_SETTINGS[ACTIVE_NETWORK].chainId)
+                .then(() => setInvalidNetwork(false))
+                .catch((error: any) => {
 
-		if (!web3) return
+                    // not found network
+                    if ("code" in error && (error.code === 4902 || error.code === -32603)) {
+                        console.log(Moralis.web3Library.utils.hexlify(NETWORK_SETTINGS[ACTIVE_NETWORK].chainId))
+                        Moralis.addNetwork(
+                            Moralis.web3Library.utils.hexlify(NETWORK_SETTINGS[ACTIVE_NETWORK].chainId),
+                            NETWORK_SETTINGS[ACTIVE_NETWORK].name,
+                            NETWORK_SETTINGS[ACTIVE_NETWORK].currencyName,
+                            NETWORK_SETTINGS[ACTIVE_NETWORK].currencySymbol,
+                            NETWORK_SETTINGS[ACTIVE_NETWORK].rpcUrl,
+                            NETWORK_SETTINGS[ACTIVE_NETWORK].blockExplorerUrl
+                        )
+                            .then(() => {
+                                setInvalidNetwork(false)
+                                resolve(true)
+                            })
+                            .catch(reject)
+                    }
+                })
+        })
+    }
 
-		alert(chainId)
-
-		console.log(walletAddress)
-		console.log(chainId)
-		//if (getNetworkName(chainId) != "Binance Smart Chain Testnet") return setInvalidNetwork(true)
-
-		const message = "hello world!"
-
-		const signer = web3.getSigner()
-
-		// signer.signMessage(message)
-		// 	.then((signature) => {
-		// 		//signMessage.hide()
-		// 		const authMessage = showLoading("Authenticating...")
-
-		// 		router.push("/account")
-		// 	})
-		// 	.catch(showError)
-
-		const options = {
-			contractAddress: "0xf522C097CA0E61bF4283710FEA847a88BF19990A",
-			functionName: "publishVideo",
-			abi: ABI,
-			params: {videoName: "test", cid: "bafybeibonosd36h75az246oqicyancmrfeeaaczdemxf7otiwfzvhpbi4a", permissionProofs: ["0x993dab3dd91f5c6dc28e17439be475478f5635c92a56e17e82349d3fb2f166196f466c0b4e0c146f285204f0dcb13e5ae67bc33f4b888ec32dfe0a063e8f3f781b"]}
-		};
-		Moralis.executeFunction(options)
-			.then(console.info)
-			.catch(console.error)
-
-	}, [web3])
-
-	// Automatically set Web3 with provider
-	useEffect(() => {
-		providerInfo && setWeb3(new Web3(providerInfo.provider))
-	}, [providerInfo])
-
-	// Set Web3 Provider
-	const setWeb3Provider = (providerInfo: any) => setProviderInfo(providerInfo)
-
-	function getNetworkName(chainID: number) {
-		return chainID in networks ? networks[chainID] : 'unknown network'
-	}
-
-	return (
-		<Web3Context.Provider value={{ walletAddress, web3, account }}>
-			{
-				invalidNetwork &&
-				<Modal isOpen={invalidNetwork}>
-					<FaTimesCircle size={42} color="red" className='mr-4' />
-					<div>
-						<h3 className='text-xl text-gray-500'>Invalid Network!</h3>
-						<p className='text-base text-gray-600'>Please change your metamask network to continue.</p>
-						<button className="group h-14 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark-muted items-center"
-						>
-							<img src="/assets/metamask.svg" className="w-8 mr-4" />
-							<h3 className="text-base text-white">Change Metamask Network</h3>
-						</button>
-					</div>
-				</Modal>
-			}
-			{children}
-		</Web3Context.Provider>
-	)
+    return (
+        <Web3Context.Provider value={{ account, signMessage, connectWallet, provider, connectMobileWallet, isWeb3EnableLoading, web3, isWeb3Enabled }}>
+            <Modal isOpen={invalidNetwork} onClose={() => setInvalidNetwork(false)}>
+                <div className="">
+                    <div className="flex justify-center items-center">
+                        <XCircleIcon className='w-32 h-32 mr-4 text-red-400' />
+                        <div>
+                            <h3 className='text-xl text-red-400 my-2 font-bold'>Invalid Network!</h3>
+                            <p className='text-base text-gray-600'><span className="font-semibold">{NETWORK_SETTINGS[ACTIVE_NETWORK].name}</span> is needed!</p>
+                            <p className='text-base text-gray-600'>Please change your metamask network to continue.</p>
+                        </div>
+                    </div>
+                    <button className="w-80 mx-auto mt-5 h-14 relative flex justify-center py-2 pl-4 pr-16 border border-bioca-orange text-sm font-medium rounded-md text-white bg-bioca-orange/90 hover:bg-bioca-orange focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 items-center"
+                        onClick={switchNetwork}
+                    >
+                        <div className="w-14 absolute right-0 bg-white/80 h-full flex justify-center items-center rounded-md">
+                            <img src="/assets/metamask.svg" className="w-12" />
+                        </div>
+                        <h3 className="text-base text-white">Change Metamask Network</h3>
+                    </button>
+                </div>
+            </Modal>
+            {children}
+        </Web3Context.Provider>
+    )
 }
-
-export default Web3Context

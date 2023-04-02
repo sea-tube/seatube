@@ -1,10 +1,9 @@
 import { ethers } from "ethers"
 import { createContext, useContext } from "react"
-import ToastContext from "./ToastContext"
 import Web3Context from "./Web3Context"
 
 type WalletContextType = {
-    walletAddress: string;
+    account: string
     signMessage: (message) => any;
     signAsHash: any;
 }
@@ -13,21 +12,7 @@ const WalletContext = createContext({} as WalletContextType)
 
 export function WalletProvider({ children }: any) {
 
-    const { web3, walletAddress, account } = useContext(Web3Context)
-
-    const { showSuccess, showError, showLoading } = useContext(ToastContext)
-
-    const fetchERC20Balance = async () => {
-        const params: any = {
-            chain: "97" // Smart Chain - Testnet
-        }
-        return await account
-            .getTokenBalances({
-                address: walletAddress,
-                chain: params.chain,
-            })
-            .then((result) => result);
-    };
+    const { web3, account } = useContext(Web3Context)
 
     const signMessage = (message) => new Promise((resolve, reject) => {
         if (!web3) return reject("web3 not set")
@@ -45,7 +30,7 @@ export function WalletProvider({ children }: any) {
     }
 
     return (
-        <WalletContext.Provider value={{ walletAddress, signMessage, signAsHash }}>
+        <WalletContext.Provider value={{ account, signMessage, signAsHash }}>
             {children}
         </WalletContext.Provider>
     )
