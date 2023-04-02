@@ -337,7 +337,7 @@ export default function Player({
         {showPeers && (
           <>
             <GraphConnect nodes={nodesData} />
-            <p className='absolute top-0 right-0 w-80 font-semibold text-center bg-rose-400 p-2'>It's just a demo preview!</p>
+            <p className='absolute top-0 right-0 w-80 font-semibold text-center bg-rose-400 p-2'>It&apos;s just a demo preview!</p>
           </>
         )}
       </div>
