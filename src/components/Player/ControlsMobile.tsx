@@ -14,7 +14,7 @@ export default function ControlsMobile({ videoRef, isFullScreen = false, onFullS
     const [isSeeking, setIsSeeking] = useState<boolean>(false);
 
     useEffect(() => {
-        if (videoRef.current.canPlayType) {
+        if (videoRef.current?.canPlayType) {
             // add event-handlers to listen video status
             videoRef.current.addEventListener("updateTime", updateTime, false);
             videoRef.current.addEventListener("durationchange", updateTime, false);
@@ -29,7 +29,7 @@ export default function ControlsMobile({ videoRef, isFullScreen = false, onFullS
         }
     }, [isSeeking])
 
-    const updateTime = (e) => {
+    const updateTime = (e: any) => {
         setTimeCurrent(timeFormat(e.target.currentTime));
         setTimeDuration(timeFormat(e.target.duration));
     }

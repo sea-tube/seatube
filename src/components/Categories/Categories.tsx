@@ -13,8 +13,8 @@ export default function Categories({ categories, onSelected, defaultValue }: Cat
     const [pressingFrom, setPressingFrom] = useState<number | null>(null);
     const [initialTranslateX, setInitialTranslateX] = useState<number>(0);
 
-    const containerRef = useRef<HTMLDivElement>();
-    const categoriesRef = useRef<HTMLDivElement>();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const categoriesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (active && onSelected) {
@@ -32,8 +32,8 @@ export default function Categories({ categories, onSelected, defaultValue }: Cat
         }
     }
 
-    const pressing = (e) => {
-        const translatedX = Number(categoriesRef.current.style.transform.replace('translateX(', '').replace('px)', ''));
+    const pressing = (e: any) => {
+        const translatedX = Number(categoriesRef.current?.style.transform.replace('translateX(', '').replace('px)', ''));
         setInitialTranslateX(translatedX);
         setPressingFrom(e.nativeEvent.layerX);
     };
@@ -45,9 +45,9 @@ export default function Categories({ categories, onSelected, defaultValue }: Cat
 
     // This function uses javascript to allow desktop users
     // to scroll with the mouse even with the scrollbar hidden.
-    const scroll = (e) => {
+    const scroll = (e: any) => {
 
-        if (pressingFrom === null) return;
+        if (pressingFrom === null || !categoriesRef.current || !containerRef.current) return;
 
         const rangeWidth = categoriesRef.current.getBoundingClientRect().width;
         const containerWidth = containerRef.current.getBoundingClientRect().width;

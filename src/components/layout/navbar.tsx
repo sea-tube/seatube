@@ -12,7 +12,7 @@ export default function Navbar() {
 
   return (
     <nav style={{ height: 56 }} className="fixed inset-0 z-10 w-full">
-      <div className="flex items-center space-x-3 w-full h-full px-6 pl-14 sm:pl-20 py-6 border-b border-gray-200 bg-white">
+      <div className="flex items-center space-x-3 w-full h-full px-2 sm:px-6 pl-14 sm:pl-20 py-6 border-b border-gray-200 bg-white">
         <Link href={'/'}>
           <a className="md:cursor-default lg:cursor-pointer">
             <Logo />
@@ -47,11 +47,11 @@ export default function Navbar() {
           </>
         ) : (
           <button
-            className="flex items-center py-1 px-2 gap-2 border border-gray-300 rounded-lg"
+            className="flex items-center sm:py-1 px-2 gap-2 border-l sm:border sm:border-gray-300 sm:rounded-lg"
             onClick={connectWallet}
           >
             <img src="/assets/metamask.svg" className="h-8 w-auto" />
-            <span className="text-sm text-gray-600 pr-1">Connect Wallet</span>
+            <span className="text-sm text-gray-600 pr-1 hidden sm:block">Connect Wallet</span>
           </button>
         )}
       </div>

@@ -5,7 +5,6 @@
     justify-content: center;
     color: #eee;
     text-shadow: 0 0 2px rgba(0, 0, 0, .5);
-    border-radius: 4px;
     background: #000;
     width: 100%;
     max-width: 1024px;
@@ -30,23 +29,17 @@
     max-width: 100%;
     height: auto;
     max-height: 100%;
-    border-radius: 4px;
     transition: all 1s ease-in-out;
 }
 
-/* @media (min-aspect-ratio: 16/9) {
+@media only screen and (min-width: 640px) {
+    .player {
+        border-radius: 4px;
+    }
     .video {
-        width:100%;
-        height: auto;
+        border-radius: 4px;
     }
 }
-
-@media (max-aspect-ratio: 16/9) {
-    .video { 
-        width:auto;
-        height: 100%;
-    }
-} */
 
 .fullScreen {
     position: fixed;

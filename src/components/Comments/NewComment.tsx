@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/solid'
 import { Listbox, Transition } from '@headlessui/react'
 import Avatar from 'components/layout/avatar'
+import { classNames } from 'utils'
 
 const moods = [
     { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
@@ -19,10 +20,6 @@ const moods = [
     { name: 'Thumbsy', value: 'thumbsy', icon: ThumbUpIcon, iconColor: 'text-white', bgColor: 'bg-blue-500' },
     { name: 'I feel nothing', value: null, icon: XIcon, iconColor: 'text-gray-400', bgColor: 'bg-transparent' },
 ]
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 export default function NewComment() {
     const [selected, setSelected] = useState(moods[5])

@@ -1,20 +1,10 @@
 import { EyeIcon } from '@heroicons/react/solid'
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { classNames } from 'utils'
-
-// id,
-// name: video.name,
-// description: video.description,
-// channel: video.channel,
-// thumbnail: video.thumbnail,
-// views: video.views,
-// timestamp: video.timestamp
 
 export const videosData = require('../../data/videos.json')
 
-interface VideoItemProps {
-  id: string
+interface VideoItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  properties: any
   thumbs?: string
 }
 
@@ -34,7 +24,7 @@ function thumbPosition(time: number) {
   return position
 }
 
-export function VideoItem({ id, thumbs }: VideoItemProps) {
+export function VideoItem({ properties, thumbs, ...props }: VideoItemProps) {
   const [isMouseOver, setIsMouseOver] = useState(false)
   const duration = 780
 
@@ -60,53 +50,46 @@ export function VideoItem({ id, thumbs }: VideoItemProps) {
   }, [isMouseOver, thumbs, startPreview])
 
   return (
-    <li
-      key={id}
+    <div
       onMouseEnter={() => setIsMouseOver(true)}
       onMouseLeave={() => setIsMouseOver(false)}
-      className='list-none mb-4'
+      className="list-none mb-4"
+      {...props}
     >
-      <Link href={`/watch/${videosData[id].nftMetadataCid}`}>
-        <a>
-          <div className="relative group aspect-w-10 aspect-h-7 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-primary-dark-muted focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
-            <img
-              src={videosData[id].poster}
-              alt=""
-              className="pointer-events-none object-cover group-hover:opacity-75 w-full"
-            />
-            <button
-              type="button"
-              className="absolute inset-0 focus:outline-none"
-            >
-              <span className="sr-only">
-                View details for {videosData[id].name}
-              </span>
-            </button>
+      <div className="relative group aspect-w-10 aspect-h-7 block w-full overflow-hidden sm:rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-primary-dark-muted focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+        <div className='w-full flex justify-center bg-black'>
+          <img
+            src={properties.metadata.image}
+            alt=""
+            className="pointer-events-none object-cover group-hover:opacity-75 h-56 md:h-64 xl:h-56 2xl:h-56 w-auto"
+          />
+        </div>
 
-            {thumbs && isMouseOver ? (
-              <div className="w-full h-full absolute inset-0 bg-black transition-all duration-500 ease-in-out">
-                {/* Player here */}
-              </div>
-            ) : (
-              <div className="w-full h-full flex justify-center items-center rounded absolute left-0 top-0 bg-black/60 opacity-0 hover:opacity-100" />
-            )}
+        {thumbs && isMouseOver ? (
+          <div className="w-full h-full absolute inset-0 bg-black transition-all duration-500 ease-in-out">
+            {/* Player here */}
           </div>
-          <div className="w-full mt-1 flex space-x-2 px-1">
-            <img src="https://github.com/sea-tube.png" className="w-8 h-8 rounded-full" />
-            <div>
-              <div className="text-base leading-5 break-words max-w-full font-medium">
-                {videosData[id].name}
-              </div>
-              <div className="text-xs flex space-x-6 text-gray-600 mt-.5">
-                <div>Tester Sea</div>
-                <div className="flex items-center">
-                  4.3K <EyeIcon className="w-3 ml-1 text-gray-500" />
-                </div>
-              </div>
+        ) : (
+          <div className="w-full h-full flex justify-center items-center rounded absolute left-0 top-0 bg-black/60 opacity-0 hover:opacity-100" />
+        )}
+      </div>
+      <div className="w-full mt-1 flex space-x-2 px-1">
+        <img
+          src="https://github.com/sea-tube.png"
+          className="w-8 h-8 rounded-full"
+        />
+        <div>
+          <div className="text-base leading-5 break-words max-w-full font-medium">
+            {properties.metadata.name}
+          </div>
+          <div className="text-xs flex space-x-6 text-gray-600 mt-.5">
+            <div>Tester Sea</div>
+            <div className="flex items-center">
+              4.3K <EyeIcon className="w-3 ml-1 text-gray-500" />
             </div>
           </div>
-        </a>
-      </Link>
-    </li>
+        </div>
+      </div>
+    </div>
   )
 }

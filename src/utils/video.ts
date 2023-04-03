@@ -22,7 +22,7 @@ export const getMetadata = async (cid: string) => {
     return metadata
 }
 
-interface VideoProperties {
+export interface VideoProperties {
     cid: string;
     url: string
     type: 'hls' | 'mp4'
