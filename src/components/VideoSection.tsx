@@ -1,31 +1,36 @@
-import Player from "components/Player/Player";
-import { videosData } from 'components/logic/Videos'
+import Player from 'components/Player/Player'
 
 import {
-    BadgeCheckIcon,
-    BellIcon,
-    DotsHorizontalIcon,
-    EyeIcon,
-    ShareIcon,
-    ShoppingBagIcon,
-    ThumbUpIcon,
-    TrendingUpIcon,
-  } from '@heroicons/react/solid'
-import Avatar from "./layout/avatar";
-import { NewComment } from "./Comments";
+  BadgeCheckIcon,
+  BellIcon,
+  DotsHorizontalIcon,
+  EyeIcon,
+  ShareIcon,
+  ShoppingBagIcon,
+  ThumbUpIcon,
+  TrendingUpIcon,
+} from '@heroicons/react/solid'
+import Avatar from './layout/avatar'
+import { NewComment } from './Comments'
+import { VideoProperties } from 'types/video'
+import { getUrlGateway } from 'utils/video'
+import axios from 'axios'
+import { useQuery } from 'react-query'
+import { VideoItem } from './logic/Videos'
+import Link from 'next/link'
 
-interface VideoProperties {
-    metadataCid: string
-    video: {
-      cid: string
-      url: string
-      poster: string
-      type: 'hls' | 'mp4'
-      metadata: any
+export default function VideoSection({
+  metadataCid,
+  videoCid,
+  metadata,
+}: VideoProperties) {
+  const { data: similarVideos } = useQuery('/api/videos', () =>
+    axios.get('/api/videos').then((res) => res.data),
+    {
+        initialData: []
     }
-  }
+  )
 
-export default function VideoSection({metadataCid, video}: VideoProperties) {
   return (
     <div className="w-full">
       <div
@@ -36,15 +41,15 @@ export default function VideoSection({metadataCid, video}: VideoProperties) {
         <div id="primary" className="w-full md:w-3/4 sm:items-right">
           <div>
             <Player
-              source={video.url}
-              poster={video.metadata.image}
-              type={video.type}
+              source={getUrlGateway(videoCid)}
+              poster={metadata.image}
+              type={metadata.properties.type || 'mp4'}
               mediaResolution={{ width: 1024, height: 436 }}
             />
 
             <div className="py-2 px-4 sm:px-1">
               <h2 className="text-2xl font-medium break-words py-1">
-                {video.metadata.name}
+                {metadata.name}
               </h2>
               <div className="flex flex-wrap items-center justify-between space-y-2 sm:space-y-0 text-sm text-gray-600">
                 <div className="flex space-x-4">
@@ -70,7 +75,7 @@ export default function VideoSection({metadataCid, video}: VideoProperties) {
                 </div>
               </div>
               <div className="py-2">
-                <p>{video.metadata.description}</p>
+                <p>{metadata.description}</p>
               </div>
             </div>
           </div>
@@ -149,11 +154,17 @@ export default function VideoSection({metadataCid, video}: VideoProperties) {
 
         <div id="secondary" className="w-full md:w-64 lg:w-80 pt-4 sm:pt-0">
           {/* Videos */}
-          <div className="px-2 sm:px-8 flex flex-col items-center">
-            {videosData.map((video: any, id: number) => (
-              <div key={id}>{/* <VideoItem properties={video} /> */}</div>
+          <ul className="px-2 sm:px-8 flex flex-col items-center">
+            {similarVideos.map((props: VideoProperties, id: number) => (
+              <li key={id}>
+                <Link href={`/watch/${props.metadataCid}`}>
+                  <a>
+                    <VideoItem metadata={props.metadata} />
+                  </a>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </div>

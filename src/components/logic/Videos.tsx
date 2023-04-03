@@ -1,12 +1,6 @@
 import { EyeIcon } from '@heroicons/react/solid'
 import { useEffect, useRef, useState } from 'react'
-
-export const videosData = require('../../data/videos.json')
-
-interface VideoItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  properties: any
-  thumbs?: string
-}
+import { VideoMetadata } from 'types/video'
 
 // Set thumb
 function thumbPosition(time: number) {
@@ -24,7 +18,7 @@ function thumbPosition(time: number) {
   return position
 }
 
-export function VideoItem({ properties, thumbs, ...props }: VideoItemProps) {
+export function VideoItem({ metadata }: {metadata: VideoMetadata}) {
   const [isMouseOver, setIsMouseOver] = useState(false)
   const duration = 780
 
@@ -44,28 +38,27 @@ export function VideoItem({ properties, thumbs, ...props }: VideoItemProps) {
 
   useEffect(() => {
     console.log('mouse over', isMouseOver)
-    if (isMouseOver && thumbs && thumbsRef.current) {
+    if (isMouseOver && metadata.properties.thumbs && thumbsRef.current) {
       videoPreview(startPreview)
     }
-  }, [isMouseOver, thumbs, startPreview])
+  }, [isMouseOver, metadata.properties.thumbs, startPreview])
 
   return (
     <div
       onMouseEnter={() => setIsMouseOver(true)}
       onMouseLeave={() => setIsMouseOver(false)}
       className="list-none mb-4"
-      {...props}
     >
       <div className="relative group aspect-w-10 aspect-h-7 block w-full overflow-hidden sm:rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-primary-dark-muted focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
         <div className='w-full flex justify-center bg-black'>
           <img
-            src={properties.metadata.image}
+            src={metadata.image}
             alt=""
             className="pointer-events-none object-cover group-hover:opacity-75 h-56 md:h-64 xl:h-56 2xl:h-56 w-auto"
           />
         </div>
 
-        {thumbs && isMouseOver ? (
+        {metadata.properties.thumbs && isMouseOver ? (
           <div className="w-full h-full absolute inset-0 bg-black transition-all duration-500 ease-in-out">
             {/* Player here */}
           </div>
@@ -80,7 +73,7 @@ export function VideoItem({ properties, thumbs, ...props }: VideoItemProps) {
         />
         <div>
           <div className="text-base leading-5 break-words max-w-full font-medium">
-            {properties.metadata.name}
+            {metadata.name}
           </div>
           <div className="text-xs flex space-x-6 text-gray-600 mt-.5">
             <div>Tester Sea</div>

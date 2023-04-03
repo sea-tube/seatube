@@ -7,15 +7,11 @@ import { useEffect, useState } from 'react'
 import { SwipeableDrawer } from '@mui/material'
 import VideoSection from 'components/VideoSection'
 import Link from 'next/link'
-import { VideoProperties, getVideoProperties } from 'utils/video'
 import { GetStaticPropsContext } from 'next'
-import axios, { Axios } from 'axios'
+import { VideoProperties } from 'types/video'
 
 interface HomeProps {
-  videos: {
-    metadataCid: string
-    video: VideoProperties
-  }[]
+  videos: VideoProperties[]
 }
 
 export default function Home({ videos }: HomeProps) {
@@ -101,7 +97,7 @@ export default function Home({ videos }: HomeProps) {
               <li key={id}>
                 <Link href={`/watch/${props.metadataCid}`}>
                   <a>
-                    <VideoItem properties={props.video} thumbs="/thumbs.png" />
+                    <VideoItem metadata={props.metadata} />
                   </a>
                 </Link>
               </li>
@@ -111,12 +107,8 @@ export default function Home({ videos }: HomeProps) {
           {/* Mobile */}
           <ul role="list" className="grid sm:hidden grid-cols-1 gap-4">
             {videos.map((props, id) => (
-              <li key={id}>
-                <VideoItem
-                  properties={props.video}
-                  thumbs="/thumbs.png"
-                  onClick={() => openVideo(props.metadataCid)}
-                />
+              <li key={id} onClick={() => openVideo(props.metadataCid)}>
+                <VideoItem metadata={props.metadata} />
               </li>
             ))}
           </ul>
@@ -124,16 +116,17 @@ export default function Home({ videos }: HomeProps) {
       </Layout>
       <SwipeableDrawer
         anchor="bottom"
-        open={currentVideoProperties}
+        open={!!currentVideoProperties}
         onClose={() => closeVideo()}
-        onOpen={null}
+        onOpen={() => null}
         hysteresis={0.8}
         transitionDuration={450}
       >
         {currentVideoProperties && (
           <VideoSection
-            video={currentVideoProperties.video}
+            videoCid={currentVideoProperties.videoCid}
             metadataCid={currentVideoProperties.metadataCid}
+            metadata={currentVideoProperties.metadata}
           />
         )}
       </SwipeableDrawer>
@@ -143,10 +136,11 @@ export default function Home({ videos }: HomeProps) {
 
 export async function getStaticProps(ctx: GetStaticPropsContext) {
   try {
-   
-    const host = process.env.NEXT_PUBLIC_VERCEL_URL ? 'https://' + process.env.NEXT_PUBLIC_VERCEL_URL : 'http://localhost:3000'
-    
-    const videos = await fetch(host + '/api/videos').then(res => res.json())
+    const host = process.env.NEXT_PUBLIC_VERCEL_URL
+      ? 'https://' + process.env.NEXT_PUBLIC_VERCEL_URL
+      : 'http://localhost:3000'
+
+    const videos = await fetch(host + '/api/videos').then((res) => res.json())
 
     return {
       props: {

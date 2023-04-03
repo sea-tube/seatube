@@ -1,9 +1,7 @@
 import Head from "next/head"
-import { useRouter } from "next/router"
 import Layout from "../components/layout"
-import Page_header from "../components/layout/page_header"
 import Svg from "../components/layout/svg"
-import { ShieldCheckIcon, ShieldExclamationIcon, SpeakerphoneIcon, ThumbUpIcon, UserRemoveIcon } from '@heroicons/react/solid'
+import { ShieldCheckIcon, ShieldExclamationIcon, ThumbUpIcon, UserRemoveIcon } from '@heroicons/react/solid'
 import { useContext, useState } from "react"
 import WalletContext from "../contexts/WalletContext"
 import { TrendingUpIcon } from "@heroicons/react/outline"

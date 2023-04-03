@@ -7,21 +7,26 @@ import { WalletProvider } from '../contexts/WalletContext'
 import { MoralisProvider } from 'react-moralis'
 import '../styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }) {
   return (
     <MoralisProvider initializeOnMount={false}>
       <ToastProvider>
-        {/*<RouteGuardProvider>*/}
-        <AuthProvider>
-          <Web3Provider>
-            <WalletProvider>
-              <Component {...pageProps} />
-              <Analytics />
-            </WalletProvider>
-          </Web3Provider>
-        </AuthProvider>
-        {/*</RouteGuardProvider>*/}
+        <QueryClientProvider client={queryClient}>
+          {/*<RouteGuardProvider>*/}
+          <AuthProvider>
+            <Web3Provider>
+              <WalletProvider>
+                <Component {...pageProps} />
+                <Analytics />
+              </WalletProvider>
+            </Web3Provider>
+          </AuthProvider>
+          {/*</RouteGuardProvider>*/}
+        </QueryClientProvider>
       </ToastProvider>
     </MoralisProvider>
   )

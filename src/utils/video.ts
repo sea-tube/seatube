@@ -22,42 +22,6 @@ export const getMetadata = async (cid: string) => {
     return metadata
 }
 
-export interface VideoProperties {
-    cid: string;
-    url: string
-    type: 'hls' | 'mp4'
-    poster: string
-    metadata: Record<string, any>
-}
-
-export const getVideoProperties = async (cid: string): Promise<VideoProperties> => {
-    const metadata = await getMetadata(cid)
-
-    const poster = `https://ipfs.livepeer.com/ipfs/${metadata.image.replace(
-        'ipfs://',
-        '',
-    )}`
-    let url: string
-    let type: 'hls' | 'mp4'
-
-    const videoCID = metadata.properties.video.replace('ipfs://', '')
-
-    if (
-        'transcodes' in metadata.properties &&
-        'hls' in metadata.properties.transcodes
-    ) {
-        url = await customManifestSources(videoCID)
-        type = 'hls'
-    } else {
-        url = `https://ipfs.livepeer.com/ipfs/${videoCID}`
-        type = 'mp4'
-    }
-
-    return {
-        cid: videoCID,
-        url,
-        type,
-        poster,
-        metadata,
-    }
+export const getUrlGateway = (cid: string) => {
+    return `https://ipfs.livepeer.com/ipfs/${cid}`
 }
