@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import axios from 'axios'
 import { VideoProperties } from 'types/video'
+import { listVideos } from 'lib/videos'
 
 interface SearchBarProps {
   onFocus?: () => void
@@ -16,12 +17,9 @@ export function SearchBar({ onFocus, onBlur }: SearchBarProps) {
 
   const router = useRouter()
 
-  const { data: videosData } = useQuery('/api/videos', () =>
-    axios.get('/api/videos').then((res) => res.data),
-    {
-        initialData: [],
-    }
-  )
+  const { data: videosData } = useQuery('videoList', () => listVideos(), {
+    initialData: [],
+  })
 
   const videos = videosData.map((props: VideoProperties, id) => ({
     id,

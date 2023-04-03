@@ -18,18 +18,16 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 import { VideoItem } from './logic/Videos'
 import Link from 'next/link'
+import { listVideos } from 'lib/videos'
 
 export default function VideoSection({
   metadataCid,
   videoCid,
   metadata,
 }: VideoProperties) {
-  const { data: similarVideos } = useQuery('/api/videos', () =>
-    axios.get('/api/videos').then((res) => res.data),
-    {
-        initialData: []
-    }
-  )
+  const { data: similarVideos } = useQuery('videoList', () => listVideos(), {
+    initialData: [],
+  })
 
   return (
     <div className="w-full">

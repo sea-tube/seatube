@@ -9,6 +9,7 @@ import VideoSection from 'components/VideoSection'
 import Link from 'next/link'
 import { GetStaticPropsContext } from 'next'
 import { VideoProperties } from 'types/video'
+import { listVideos } from 'lib/videos'
 
 interface HomeProps {
   videos: VideoProperties[]
@@ -136,15 +137,9 @@ export default function Home({ videos }: HomeProps) {
 
 export async function getStaticProps(ctx: GetStaticPropsContext) {
   try {
-    const host = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? 'https://' + process.env.NEXT_PUBLIC_VERCEL_URL
-      : 'http://localhost:3000'
-
-    const videos = await fetch(host + '/api/videos').then((res) => res.json())
-
     return {
       props: {
-        videos,
+        videos: await listVideos()
       },
     }
   } catch (e) {
