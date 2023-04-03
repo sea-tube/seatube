@@ -66,7 +66,7 @@ export function VideoItem({ metadata }: {metadata: VideoMetadata}) {
           <div className="w-full h-full flex justify-center items-center rounded absolute left-0 top-0 bg-black/60 opacity-0 hover:opacity-100" />
         )}
       </div>
-      <div className="w-full mt-1 flex space-x-2 px-1">
+      <div className="w-full mt-1 flex break-all space-x-2 px-1">
         <img
           src="https://github.com/sea-tube.png"
           className="w-8 h-8 rounded-full"
