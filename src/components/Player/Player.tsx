@@ -239,14 +239,7 @@ export default function Player({
       <div id="seaPlayer" className={styles.player} ref={playerRef}>
         <video
           id="video"
-          className={styles.video}
-          style={{
-            height:
-              mediaResolution && playerRef.current
-                ? playerRef.current.clientWidth /
-                  (mediaResolution.width / mediaResolution.height)
-                : 'auto',
-          }}
+          className='aspect-video'
           ref={videoRef}
           poster={poster}
           autoPlay={true}
