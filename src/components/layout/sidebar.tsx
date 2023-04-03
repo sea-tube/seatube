@@ -95,7 +95,7 @@ export default function Sidebar() {
 										? <Logo />
 										: <button
 											type="button"
-											className="px-4 text-gray-00 focus:outline-none"
+											className="flex justify-center w-12 focus:outline-none"
 											onClick={() => setSideBarActive(true)}
 										>
 											<span className="sr-only">Open sidebar</span>
