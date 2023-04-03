@@ -14,7 +14,6 @@ import Avatar from './layout/avatar'
 import { NewComment } from './Comments'
 import { VideoProperties } from 'types/video'
 import { getUrlGateway } from 'utils/video'
-import axios from 'axios'
 import { useQuery } from 'react-query'
 import { VideoItem } from './logic/Videos'
 import Link from 'next/link'
@@ -150,7 +149,7 @@ export default function VideoSection({
           </div>
         </div>
 
-        <div id="secondary" className="w-full md:w-64 lg:w-80 pt-4 sm:pt-0">
+        <div id="secondary" className="w-full md:w-64 lg:w-80 xl:w-96 pt-4 sm:pt-0">
           {/* Videos */}
           <ul className="px-2 sm:px-8 flex flex-col items-center">
             {similarVideos.map((props: VideoProperties, id: number) => (

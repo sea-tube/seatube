@@ -49,12 +49,12 @@ export function VideoItem({ metadata }: {metadata: VideoMetadata}) {
       onMouseLeave={() => setIsMouseOver(false)}
       className="list-none mb-4"
     >
-      <div className="relative group aspect-w-10 aspect-h-7 block w-full overflow-hidden sm:rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-primary-dark-muted focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
-        <div className='w-full flex justify-center bg-black'>
+      <div className="relative group aspect-video block overflow-hidden sm:rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-primary-dark-muted focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+        <div className='w-full flex justify-center h-full'>
           <img
             src={metadata.image}
             alt=""
-            className="pointer-events-none object-cover group-hover:opacity-75 h-56 md:h-64 xl:h-56 2xl:h-56 w-auto"
+            className="pointer-events-none object-cover group-hover:opacity-75 h-full"
           />
         </div>
 

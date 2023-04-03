@@ -92,7 +92,7 @@ export default function Home({ videos }: HomeProps) {
           {/* Desktop */}
           <ul
             role="list"
-            className="hidden sm:grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 grid-rows-2 max-w-[2480px]"
+            className="hidden sm:grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 grid-rows-2 "
           >
             {[...videos, ...videos].map((props, id) => (
               <li key={id}>
